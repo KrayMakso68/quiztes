@@ -15,7 +15,14 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-    <div id="header"></div>
+    <nav class="navbar" style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+            <a class="navbar-brand" style="font-size: 150%; margin-left: 12%; font-size: 40px;">
+                <img src="{% static 'main/img/fso.svg' %}" alt="Logo" width="180" height="180" class="img-fluid" style="padding-right: 50px;">
+                Тестовая система ТЭС
+            </a>
+        </div>
+    </nav>
     <div id="wrapper">
         <div id="sidebar1"></div>
         <div id="main">
