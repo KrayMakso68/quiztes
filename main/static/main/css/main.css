@@ -1,19 +1,31 @@
-body{
-    background: #2c2c2c;
+#footer{
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
-.header{
-    color: cyan;
-    width: 100%;
+
+
+
+html, body {
+  width: 100%;
+  height:100%;
 }
-.sidebar1{
-    float: left;
-    width: 20%;
+
+body {
+    background: linear-gradient(90deg, #ebf2bd,#438cbb);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
 }
-.sidebar2{
-    float: right;
-    width: 20%;
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
-.main{
-    color: #4d4d4d;
-}
+

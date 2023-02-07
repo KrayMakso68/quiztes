@@ -15,22 +15,37 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-    <nav class="navbar" style="background-color: #e3f2fd;">
-        <div class="container-fluid">
-            <a class="navbar-brand" style="font-size: 150%; margin-left: 12%; font-size: 40px;">
-                <img src="{% static 'main/img/fso.svg' %}" alt="Logo" width="180" height="180" class="img-fluid" style="padding-right: 50px;">
-                Тестовая система ТЭС
-            </a>
-        </div>
-    </nav>
-    <div id="wrapper">
-        <div id="sidebar1"></div>
-        <div id="main">
-            {% block content %}
-            {% endblock %}
-        </div>
-        <div id="sidebar2"></div>
+    <div id="header" style=" border-bottom: 8px solid transparent; box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);">
+        <nav class="navbar" style="background-color: #e3f2fd;">
+            <div class="container-fluid">
+                <a class="navbar-brand" style="font-size: 150%; margin-left: 12%; font-size: 40px;">
+                    <img src="{% static 'main/img/fso.svg' %}" alt="Logo" width="150" height="150" class="img-fluid" style="padding-right: 50px;">
+                    Тестовая система ТЭС
+                </a>
+            </div>
+        </nav>
     </div>
-    <div id="footer"></div>
+    <div class="container">
+        <div class="row">
+            <div class="align-self-start">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    <div class="fixed-bottom">
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top" id="footer">
+            <p class="col-md-4 mb-0 text-muted">© 2022 Company, Inc</p>
+
+             <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+             </a>
+
+            <ul class="nav col-md-4 justify-content-end">
+              <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
+              <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+            </ul>
+        </footer>
+    </div>
 </body>
 </html>

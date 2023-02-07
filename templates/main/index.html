@@ -1,17 +1,27 @@
 {% extends 'main/layout.html' %}
+{% load static %}
 
 {% block title %}
     Index
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-5 m-3">
-                <div class="alert alert-success" role="alert">
-                    <strong>Hello world!</strong> Bootstrap is working
+    <form></form>
+        <div class="container" style="margin-top: 3%;">
+            <div class="row justify-content-center">
+                <div class="col-7 m-4">
+                    <div class="alert alert-primary" role="alert">
+                        <strong>Hello world!</strong> Bootstrap is working
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-5">
+                    <div class="alert alert-success" role="alert">
+                        <strong>Hello world!</strong> Bootstrap is working
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 {% endblock %}
