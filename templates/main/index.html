@@ -6,22 +6,125 @@
 {% endblock %}
 
 {% block content %}
-    <form></form>
-        <div class="container" style="margin-top: 3%;">
+    <form>
+        <div class="container" style="margin-top: 1%;">
             <div class="row justify-content-center">
-                <div class="col-7 m-4">
+                <div class="col-7">
                     <div class="alert alert-primary" role="alert">
-                        <strong>Hello world!</strong> Bootstrap is working
+                        <legend>Данные пользователя</legend>
+                        <div class="form-floating mb-1">
+                            <input type="text" class="form-control" id="floatingInput" placeholder="Имя и Фамилия">
+                            <label for="floatingInput">Фамилия Имя</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="floatingInput"
+                                   placeholder="Номер учебной группы">
+                            <label for="floatingInput">Номер учебной группы</label>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-5">
+                <div class="col-7">
                     <div class="alert alert-success" role="alert">
-                        <strong>Hello world!</strong> Bootstrap is working
+                        <legend>Выберите темы</legend>
+                        <select class="form-select  mb-4" aria-label=".form-select-sm example">
+                            <option value="1">Свой тест</option>
+                            <option value="2">Тест за 4 семестр</option>
+                            <option value="3">Тест за 5 семестр</option>
+                            <option value="4">Тест за курс обучения</option>
+                        </select>
+                        <div class="container text-center mb-4">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="checkbox" type="checkbox" value="1" id="flexCheck1">
+                                        <label class="form-check-label" for="flexCheck1" style="white-space: nowrap">
+                                            Тема №1
+                                        </label>
+                                    </div>
+                                    <br>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="checkbox" type="checkbox" value="2" id="flexCheck2">
+                                        <label class="form-check-label" for="flexCheck2">
+                                            Тема №2
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="checkbox" type="checkbox" value="3" id="flexCheck3">
+                                        <label class="form-check-label" for="flexCheck3" style="white-space: nowrap">
+                                            Тема №3
+                                        </label>
+                                    </div>
+                                    <br>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="checkbox" type="checkbox" value="4" id="flexCheck4">
+                                        <label class="form-check-label" for="flexCheck4">
+                                            Тема №4
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="checkbox" type="checkbox" value="5" id="flexCheck5">
+                                        <label class="form-check-label" for="flexCheck5" style="white-space: nowrap">
+                                            Тема №5
+                                        </label>
+                                    </div>
+                                    <br>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="checkbox" type="checkbox" value="6" id="flexCheck6">
+                                        <label class="form-check-label" for="flexCheck6">
+                                            Тема №6
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="checkbox" type="checkbox" value="7" id="flexCheck7">
+                                        <label class="form-check-label" for="flexCheck7" style="white-space: nowrap">
+                                            Тема №7
+                                        </label>
+                                    </div>
+                                    <br>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="checkbox" type="checkbox" value="8" id="flexCheck8">
+                                        <label class="form-check-label" for="flexCheck8">
+                                            Тема №8
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="checkbox" type="checkbox" value="9" id="flexCheck9">
+                                        <label class="form-check-label" for="flexCheck1" style="white-space: nowrap">
+                                            Тема №9
+                                        </label>
+                                    </div>
+                                    <br>
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="checkbox" type="checkbox" value="10" id="flexCheck10">
+                                        <label class="form-check-label" for="flexCheck10">
+                                            Тема №10
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-auto">
+                                <label for="CountQuestions" class="visually-hidden">Количество вопросов</label>
+                                <input type="number" class="form-control" id="CountQuestions" placeholder="Количество вопросов">
+                            </div>
+                            <div class="col-6"></div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-warning">Начать тест</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     </form>
 {% endblock %}
