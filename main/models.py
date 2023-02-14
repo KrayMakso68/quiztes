@@ -9,3 +9,9 @@ class Subject(models.Model):
     class Meta:
         verbose_name = 'Тема'
         verbose_name_plural = 'Темы'
+
+class TestModel(models.Model):
+    surname_name = models.CharField('Фамилия Имя', max_length=100)
+    group_number = models.IntegerField('Номер группы')
+    number_of_questions = models.IntegerField('Количество вопросов')
+    number_of_correct_answers = models.IntegerField('Количестов верно отвеченных вопросов', default=0)
