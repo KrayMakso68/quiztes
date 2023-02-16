@@ -14,4 +14,5 @@ class TestModel(models.Model):
     surname_name = models.CharField('Фамилия Имя', max_length=100)
     group_number = models.IntegerField('Номер группы')
     number_of_questions = models.IntegerField('Количество вопросов')
-    number_of_correct_answers = models.IntegerField('Количестов верно отвеченных вопросов', default=0)
+    number_of_answered_questions = models.IntegerField('Количестов отвеченных вопросов', default=0)
+    questions = models.JSONField('Вопросы теста')
