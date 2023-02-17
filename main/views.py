@@ -1,11 +1,14 @@
 from django.shortcuts import render
+
 from main.forms import AddTestForm
 
 
-# Create your views here.
 def index(request):
-    form = AddTestForm()
-    data = {
-        'form': form,
-    }
-    return render(request, 'main/index.html', data)
+    if request.method == 'POST':
+        form = AddTestForm(request.POST)
+        if form.is_valid():
+            # Сюда логику
+            pass
+    else:
+        form = AddTestForm()
+    return render(request, 'main/index.html', {'form': form})

@@ -1,6 +1,9 @@
 from django import forms
-from django.forms import TextInput, NumberInput, SelectMultiple
+from django.forms import ValidationError
+
 from main.models import Subject
+
+
 class AddTestForm(forms.Form):
     check_subjects_choices = ((subject.subject_number, subject.name) for subject in Subject.objects.all())
     test_type_choices = (
@@ -29,6 +32,7 @@ class AddTestForm(forms.Form):
     check_subjects = forms.MultipleChoiceField(
         validators=[],
         choices=check_subjects_choices,
+        required=False,
         widget=forms.CheckboxSelectMultiple(attrs={
             'class': 'form-check-input',
             'name': 'checkbox',
@@ -42,3 +46,14 @@ class AddTestForm(forms.Form):
         'id': 'CountQuestions',
         'placeholder': 'Количество вопросов'
     })
+
+    def clean(self):
+        super(AddTestForm, self).clean()
+        if self.cleaned_data['test_type'] == '1' and not self.cleaned_data['check_subjects']:
+            raise ValidationError('Для своего теста необходимо выбрать темы')
+
+    def clean_surname_name(self):
+        name = self.cleaned_data['surname_name']
+        words_number = len(name.split())
+        if words_number != 2:
+            raise ValidationError(f'Фамилия и Имя это 2 слова, а не {words_number}!')
