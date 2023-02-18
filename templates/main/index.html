@@ -17,11 +17,13 @@
                             {{ form.surname_name }}
                             <!--                            <input type="text" class="form-control" id="floatingInput" placeholder="Фамилия Имя">-->
                             <label for="{{ form.surname_name.id_for_label }}">Фамилия Имя</label>
+                            {{ form.surname_name.errors }}
                         </div>
                         <div class="form-floating">
                             {{ form.group_number }}
                             <!--                            <input type="number" class="form-control" id="floatingInput" placeholder="Номер учебной группы">-->
                             <label for="floatingInput">Номер учебной группы</label>
+                            {{ form.group_number.errors }}
                         </div>
                     </div>
                 </div>
@@ -30,6 +32,7 @@
                 <div class="col-7">
                     <div class="alert alert-success" role="alert">
                         <legend>Выберите темы</legend>
+                        {{ form.non_field_errors }}
                         {{ form.test_type }}
                         <!--                        <select class="form-select  mb-4" aria-label=".form-select-sm example">-->
                         <!--                            <option value="1">Свой тест</option>-->
@@ -37,7 +40,7 @@
                         <!--                            <option value="3">Тест за 5 семестр</option>-->
                         <!--                            <option value="4">Тест за курс обучения</option>-->
                         <!--                        </select>-->
-                        <div class="collapse show" id="test_type_div">
+                        <div class="collapse" id="test_type_div">
                             <div class="container text-center mb-3">
                                 <div class="row row-cols-5">
                                     {% for el in form.check_subjects %}
@@ -135,6 +138,7 @@
                             <div class="col-auto">
                                 <label for="CountQuestions" class="visually-hidden">Количество вопросов</label>
                                 {{ form.number_of_questions }}
+                                {{ form.number_of_questions.errors }}
                                 <!--                                <input type="number" class="form-control" id="CountQuestions" placeholder="Количество вопросов">-->
                             </div>
                             <div class="col-6"></div>
@@ -152,17 +156,18 @@
 {% block scripts %}
     {{ block.super }}
     <script>
-        $(document).ready(
-            $('#id_test_type').change((event) => {
-                    var testType = event.target.value;
-                    if (testType == 1) {
-                        $('#test_type_div').collapse('show')
-                    } else {
-                        $('#test_type_div').collapse('hide')
-                    }
-                }
-            )
-        )
+        $(document).ready(() => {
+            let testTypeDiv = $('#test_type_div');
+            let testTypeSelect = $('#id_test_type');
+
+            if (testTypeSelect.val() === '1')
+                testTypeDiv.collapse('show')
+
+            testTypeSelect.change((event) => {
+                let testType = event.target.value;
+                testTypeDiv.collapse(testType === '1' ? 'show' : 'hide')
+            })
+        })
     </script>
 {% endblock %}
 
