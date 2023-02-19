@@ -15,11 +15,11 @@ class AddTestForm(forms.Form):
 
     surname_name = forms.CharField(required=True, max_length=50)
     surname_name.widget = forms.TextInput(attrs={
-        'class': 'form-control',
+        'class': 'form-control has-validation',
         'id': 'floatingInput',
         'placeholder': 'Фамилия Имя'
     })
-    group_number = forms.IntegerField(required=True, min_value=101, max_value=1000)
+    group_number = forms.IntegerField(required=True, min_value=100, max_value=699)
     group_number.widget = forms.NumberInput(attrs={
         'class': 'form-control',
         'id': 'floatingInput',
@@ -30,7 +30,6 @@ class AddTestForm(forms.Form):
         'aria-label': '.form-select-sm'
     }))
     check_subjects = forms.MultipleChoiceField(
-        validators=[],
         choices=check_subjects_choices,
         required=False,
         widget=forms.CheckboxSelectMultiple(attrs={
@@ -50,7 +49,7 @@ class AddTestForm(forms.Form):
     def clean(self):
         super(AddTestForm, self).clean()
         if self.cleaned_data['test_type'] == '1' and not self.cleaned_data['check_subjects']:
-            raise ValidationError('Для своего теста необходимо выбрать темы')
+            raise ValidationError('Для теста необходимо выбрать темы!')
 
     def clean_surname_name(self):
         name = self.cleaned_data['surname_name']
