@@ -56,3 +56,10 @@ class AddTestForm(forms.Form):
         words_number = len(name.split())
         if words_number != 2:
             raise ValidationError(f'Фамилия и Имя это 2 слова, а не {words_number}!')
+
+    def clean_number_of_questions(self):
+        number = self.cleaned_data['number_of_questions']
+        check_subjects = self.cleaned_data['check_subjects']
+        if number < len(check_subjects):
+            raise ValidationError('Количество вопросов не может быть меньше количества выбранных тем!')
+        return number
