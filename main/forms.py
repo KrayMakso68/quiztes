@@ -15,7 +15,7 @@ class AddTestForm(forms.Form):
 
     surname_name = forms.CharField(required=True, max_length=50)
     surname_name.widget = forms.TextInput(attrs={
-        'class': 'form-control has-validation',
+        'class': 'form-control',
         'id': 'floatingInput',
         'placeholder': 'Фамилия Имя'
     })

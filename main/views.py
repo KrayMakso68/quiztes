@@ -20,18 +20,27 @@ def index(request):
                 subjects = [6, 7, 8, 9, 10]
             else:
                 subjects = form.cleaned_data["check_subjects"]
-                # print(subjects)
-                # print(test.number_of_questions)
-            questions_on_subjects_list = split_qustions(test.number_of_questions, len(subjects))
-            # print(questions_on_subjects_list)
-
+                    #print(subjects)
+                    #print(test.number_of_questions)
+            questions_for_subjects_list = split_questions(test.number_of_questions, len(subjects))
+                #print(questions_for_subjects_list)
+            questions_types = 3
+            questions_json_dict = {'questions': {}}
+            for i in range(len(subjects)):
+                subject_number = subjects[i]
+                questions_in_subject = questions_for_subjects_list[i]
+                questions_for_question_type_list = split_questions(questions_in_subject, questions_types)
+                    #print(questions_for_question_type_list)
     else:
         form = AddTestForm()
     return render(request, 'main/index.html', {'form': form})
 
-def split_qustions(x, n):
+def split_questions(x, n):
     if x < n:
-        return -1
+        list_of_questions = [0] * n
+        for i in range(x):
+            list_of_questions[i] = 1
+        return list_of_questions
     elif x % n == 0:
         list_of_questions = [x // n for i in range(n)]
         return list_of_questions
