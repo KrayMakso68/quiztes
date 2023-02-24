@@ -1,4 +1,5 @@
 from django.db import models
+from django_jsonform.models.fields import JSONField
 
 class Subject(models.Model):
     name = models.CharField('Название', max_length=20)
@@ -16,3 +17,50 @@ class TestModel(models.Model):
     number_of_questions = models.IntegerField('Количество вопросов')
     number_of_answered_questions = models.IntegerField('Количестов отвеченных вопросов', default=0)
     questions = models.JSONField('Вопросы теста')
+
+class QuestionsType1Model(models.Model):
+    ITEMS_SCHEMA = {
+        'type': 'list',  # or 'array'
+        'title': 'Варианты ответов',
+        'items': {
+            'type': 'string'
+        },
+        "minItems": 2,
+        "maxItems": 6
+    }
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, name='Тема вопроса')
+    text = models.TextField('Текст вопроса')
+    answer_options = JSONField('Варианты ответов', schema=ITEMS_SCHEMA)
+    right_answer = models.IntegerField('Номер верного ответа (по порядку)')
+    class Meta:
+        verbose_name = 'Вопрос 1 типа'
+        verbose_name_plural = 'Вопросы 1 типа'
+
+class QuestionsType2Model(models.Model):
+    ITEMS_SCHEMA = {
+        'type': 'list',
+        'title': 'Варианты ответов с картинкой',
+        'items': {
+            'type': 'object',
+            'keys': {
+                "img_input": {              # в списке по ключу 'img_input' получим путь до файла по типу 'path/to/logo.png'
+                    "type": "string",
+                    "format": "file-url",
+                    "widget": "fileinput",
+                    "helpText": "Выберите изображение для загрузки",
+                }
+            }
+        },
+        "minItems": 2,
+        "maxItems": 6
+    }
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, name='Тема вопроса')
+    text = models.TextField('Текст вопроса')
+    answer_options = JSONField('Варианты ответов', schema=ITEMS_SCHEMA, file_handler='main/static/main/uploaded_img')
+    right_answer = models.IntegerField('Номер верного ответа (по порядку)')
+    class Meta:
+        verbose_name = 'Вопрос 2 типа'
+        verbose_name_plural = 'Вопросы 2 типа'
+
+# для загрузки файлов
+#file_handler='main/static/main/uploaded_img'

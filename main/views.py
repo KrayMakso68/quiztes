@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from main.forms import AddTestForm
-from main.models import TestModel
+from main.models import TestModel, QuestionsType1Model, QuestionsType2Model
 
 
 def index(request):
@@ -20,17 +20,58 @@ def index(request):
                 subjects = [6, 7, 8, 9, 10]
             else:
                 subjects = form.cleaned_data["check_subjects"]
-                    #print(subjects)
-                    #print(test.number_of_questions)
+                print(subjects)
+                print(test.number_of_questions)
             questions_for_subjects_list = split_questions(test.number_of_questions, len(subjects))
-                #print(questions_for_subjects_list)
-            questions_types = 3
+            print(questions_for_subjects_list)
+            questions_types = 4                     #types of questions in the database
             questions_json_dict = {'questions': {}}
+            all_questions_type1 = QuestionsType1Model.objects.all()
+            all_questions_type2 = QuestionsType2Model.objects.all()
+            all_questions_type3 = QuestionsType3Model.objects.all()
+            all_questions_type4 = QuestionsType4Model.objects.all()
+            add_question_number = 0
             for i in range(len(subjects)):
                 subject_number = subjects[i]
                 questions_in_subject = questions_for_subjects_list[i]
-                questions_for_question_type_list = split_questions(questions_in_subject, questions_types)
-                    #print(questions_for_question_type_list)
+                questions_for_questiontype_list = split_questions(questions_in_subject, questions_types)
+                print(questions_for_questiontype_list)
+                questions_type1 = all_questions_type1.filter(subject__subject_number=subject_number).order_by('?')[:questions_for_questiontype_list[0]]
+                questions_type2 = all_questions_type2.filter(subject__subject_number=subject_number).order_by('?')[:questions_for_questiontype_list[1]]
+                questions_type3 = all_questions_type3.filter(subject__subject_number=subject_number).order_by('?')[:questions_for_questiontype_list[2]]
+                questions_type4 = all_questions_type4.filter(subject__subject_number=subject_number).order_by('?')[:questions_for_questiontype_list[3]]
+                # ...add other types
+
+                for que in questions_type1:
+                    questions_json_dict['questions'][add_question_number] = {'type': '1',
+                                                                             'id': que.id,
+                                                                             'answered': False,
+                                                                             'right': None
+                                                                             }
+                    add_question_number += 1
+                for que in questions_type2:
+                    questions_json_dict['questions'][add_question_number] = {'type': '2',
+                                                                             'id': que.id,
+                                                                             'answered': False,
+                                                                             'right': None
+                                                                             }
+                    add_question_number += 1
+                for que in questions_type3:
+                    questions_json_dict['questions'][add_question_number] = {'type': '3',
+                                                                             'id': que.id,
+                                                                             'answered': False,
+                                                                             'right': None
+                                                                             }
+                    add_question_number += 1
+                for que in questions_type4:
+                    questions_json_dict['questions'][add_question_number] = {'type': '4',
+                                                                             'id': que.id,
+                                                                             'answered': False,
+                                                                             'right': None
+                                                                             }
+                    add_question_number += 1
+            test.questions = questions_json_dict
+
     else:
         form = AddTestForm()
     return render(request, 'main/index.html', {'form': form})
