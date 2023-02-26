@@ -1,5 +1,5 @@
 from django.contrib import admin
-from main.models import Subject, QuestionsType1Model, QuestionsType2Model
+from main.models import Subject, QuestionsType1Model, QuestionsType2Model, QuestionsType3Model, QuestionsType4Model
 
 
 class ID_Admin(admin.ModelAdmin):
@@ -9,3 +9,5 @@ class ID_Admin(admin.ModelAdmin):
 admin.site.register(Subject)
 admin.site.register(QuestionsType1Model, ID_Admin)
 admin.site.register(QuestionsType2Model, ID_Admin)
+admin.site.register(QuestionsType3Model, ID_Admin)
+admin.site.register(QuestionsType4Model, ID_Admin)
