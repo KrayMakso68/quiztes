@@ -1,3 +1,4 @@
+from django.forms import ValidationError
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from main.forms import AddTestForm
@@ -74,7 +75,7 @@ def index(request):
                 #     add_question_number += 1
             test.questions = questions_json_dict
             test.save()
-            return redirect('/0')
+            return redirect('test/0')
 
     else:
         form = AddTestForm()
@@ -108,8 +109,9 @@ def viewquestion(request, question_number):
     question_settings_dict = test.questions['questions'][str(question_number)]
     question_type = question_settings_dict['type']
     question_id = question_settings_dict['id']
-    question_answered = question_settings_dict['answered']
-    question_right = question_settings_dict['right']
+    question_answered_check = question_settings_dict['answered']
+    question_right_check = question_settings_dict['right']
+
     question_model = None
     if question_type == '1':
         question_model = QuestionsType1Model.objects.get(id=question_id)
@@ -120,7 +122,15 @@ def viewquestion(request, question_number):
     else:
         question_model = QuestionsType4Model.objects.get(id=question_id)
 
+    answer_options_dict = {}
+    for i in range(len(question_model.answer_options)):
+        answer_options_dict[(i+1)] = question_model.answer_options[i]
+
     if request.method == 'POST':
         print("d")
     else:
-        return render(request, 'main/current_question_type1.html', {'question': question_model})
+        return render(request, 'main/current_question_type1.html', {'question': question_model,
+                                                                    'question_number': question_number,
+                                                                    'next_question_number': question_number+1,
+                                                                    'answer_options_dict': answer_options_dict
+                                                                    })
