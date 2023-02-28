@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    Вопрос
+    Вопрос {{ question_number }}
 {% endblock %}
 
 {% block content %}
@@ -11,7 +11,52 @@
         <div class="container" style="margin-top: 2%;">
             <div class="row justify-content-center">
                 <div class="col-8">
-                    <div class="alert alert-primary" role="alert">
+                    <div class="alert alert-dark" role="alert">
+                        <div class="card text-bg-light">
+                            <div class="card-header">
+                                Вопрос №{{ next_question_number }}
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ question.text | safe }}</h5>
+                            </div>
+                        </div>
+                        <div class="card text-bg-light mt-2">
+                            <div class="card-header">
+                                Варианты ответа:
+                            </div>
+                            <div class="card-body">
+                                <div class="container">
+                                    <div class="row row-conformity">
+                                        <div class="col">
+                                            {% for index, el in answer_options_dict.items %}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="RadioOptions"
+                                                       value={{index}}
+                                                       id="flexRadioDefault{{index}}">
+                                                <label class="form-check-label" for="flexRadioDefault{{index}}">
+                                                    <h5 class="card-title">{{el}}</h5>
+                                                </label>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="col">
+                                            <div class="to-bottom">
+                                                Я прижат книзу
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% for index, el in answer_options_dict.items %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="RadioOptions" value={{index}}
+                                           id="flexRadioDefault{{index}}">
+                                    <label class="form-check-label" for="flexRadioDefault{{index}}">
+                                        {{el}}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
                         <legend>Данные пользователя</legend>
                         <h6>Здорова</h6>
                         {{ question.text | safe }}
@@ -19,13 +64,15 @@
                         <form>
                             {% for index, el in answer_options_dict.items %}
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="RadioOptions" value={{index}} id="flexRadioDefault{{index}}">
+                                <input class="form-check-input" type="radio" name="RadioOptions" value={{index}}
+                                       id="flexRadioDefault{{index}}">
                                 <label class="form-check-label" for="flexRadioDefault{{index}}">
                                     {{el}}
                                 </label>
-                            </div>{% endfor %}
+                            </div>
+                            {% endfor %}
                         </form>
-                        <a href="{% url 'viewquestion' question_number=next_question_number %}" class="btn btn-primary" role="button" >следующий вопрос</a>
+                        <a href="{% url 'viewquestion' question_number=next_question_number %}" class="btn btn-primary" role="button" >Следующий вопрос</a>
                         <br>
                     </div>
                 </div>

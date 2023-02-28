@@ -19,6 +19,7 @@ class TestModel(models.Model):
     group_number = models.IntegerField('Номер группы')
     number_of_questions = models.IntegerField('Количество вопросов')
     number_of_answered_questions = models.IntegerField('Количестов отвеченных вопросов', default=0)
+    number_of_correctly_answered_questions = models.IntegerField('Количестов правильно отвеченных вопросов', default=0)
     questions = models.JSONField('Вопросы теста')
 
     def __str__(self):

@@ -1,6 +1,6 @@
 from django.forms import ValidationError
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import Http404
 from main.forms import AddTestForm
 from main.models import TestModel, QuestionsType1Model, QuestionsType2Model, QuestionsType3Model, QuestionsType4Model
 
@@ -76,10 +76,11 @@ def index(request):
             test.questions = questions_json_dict
             test.save()
             return redirect('test/0')
-
+        else:
+            raise Http404()
     else:
         form = AddTestForm()
-    return render(request, 'main/index.html', {'form': form})
+        return render(request, 'main/index.html', {'form': form})
 
 
 def split_questions(x, n):
@@ -127,7 +128,24 @@ def viewquestion(request, question_number):
         answer_options_dict[(i+1)] = question_model.answer_options[i]
 
     if request.method == 'POST':
-        print("d")
+        answer = request.POST.get("RadioOptions")
+        if answer == question_right_check:
+            test.number_of_answered_questions += 1
+            test.number_of_correctly_answered_questions += 1
+            test.questions['questions'][str(question_number)]['answered'] = True
+            test.questions['questions'][str(question_number)]['right'] = True
+            test.save()
+            return render(request, 'main/current_question_type1.html', {'question': question_model,
+                                                                        'question_number': question_number,
+                                                                        'next_question_number': question_number + 1,
+                                                                        'answer_options_dict': answer_options_dict
+                                                                        })
+        else:
+            test.number_of_answered_questions += 1
+            test.questions['questions'][str(question_number)]['answered'] = True
+            test.questions['questions'][str(question_number)]['right'] = False
+            test.save()
+
     else:
         return render(request, 'main/current_question_type1.html', {'question': question_model,
                                                                     'question_number': question_number,
