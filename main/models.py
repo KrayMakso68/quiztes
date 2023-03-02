@@ -25,6 +25,10 @@ class TestModel(models.Model):
     def __str__(self):
         return self.surname_name
 
+    class Meta:
+        verbose_name = 'Тест'
+        verbose_name_plural = 'Тесты'
+
 
 class QuestionsType1Model(models.Model):
     ITEMS_SCHEMA = {

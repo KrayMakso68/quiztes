@@ -33,7 +33,7 @@ def index(request):
             #all_questions_type2 = QuestionsType2Model.objects.all()
             #all_questions_type3 = QuestionsType3Model.objects.all()
             #all_questions_type4 = QuestionsType4Model.objects.all()
-            add_question_number = 0
+            add_question_number = 1
             for i in range(len(subjects)):
                 subject_number = subjects[i]
                 questions_in_subject = questions_for_subjects_list[i]
@@ -75,12 +75,10 @@ def index(request):
                 #     add_question_number += 1
             test.questions = questions_json_dict
             test.save()
-            return redirect('test/0')
-        else:
-            raise Http404()
+            return redirect('test/1')
     else:
         form = AddTestForm()
-        return render(request, 'main/index.html', {'form': form})
+    return render(request, 'main/index.html', {'form': form})
 
 
 def split_questions(x, n):
@@ -128,27 +126,41 @@ def viewquestion(request, question_number):
         answer_options_dict[(i+1)] = question_model.answer_options[i]
 
     if request.method == 'POST':
-        answer = request.POST.get("RadioOptions")
-        if answer == question_right_check:
+        answer = request.POST.get("RadioOptions") if request.POST.get("RadioOptions") else '0'
+        if str(answer) == str(question_model.right_answer):
             test.number_of_answered_questions += 1
             test.number_of_correctly_answered_questions += 1
             test.questions['questions'][str(question_number)]['answered'] = True
             test.questions['questions'][str(question_number)]['right'] = True
             test.save()
-            return render(request, 'main/current_question_type1.html', {'question': question_model,
-                                                                        'question_number': question_number,
-                                                                        'next_question_number': question_number + 1,
-                                                                        'answer_options_dict': answer_options_dict
-                                                                        })
+            question_settings_dict = test.questions['questions'][str(question_number)]
+            data = {'question': question_model,
+                    'question_number': question_number,
+                    'next_question_number': question_number + 1,
+                    'answer_options_dict': answer_options_dict,
+                    'question_settings_dict': question_settings_dict,
+                    'user_answer': int(answer)
+                    }
+            return render(request, 'main/current_question_type1.html', data)
         else:
             test.number_of_answered_questions += 1
             test.questions['questions'][str(question_number)]['answered'] = True
             test.questions['questions'][str(question_number)]['right'] = False
             test.save()
-
+            question_settings_dict = test.questions['questions'][str(question_number)]
+            data = {'question': question_model,
+                    'question_number': question_number,
+                    'next_question_number': question_number + 1,
+                    'answer_options_dict': answer_options_dict,
+                    'question_settings_dict': question_settings_dict,
+                    'user_answer': int(answer)
+                    }
+            return render(request, 'main/current_question_type1.html', data)
     else:
-        return render(request, 'main/current_question_type1.html', {'question': question_model,
-                                                                    'question_number': question_number,
-                                                                    'next_question_number': question_number+1,
-                                                                    'answer_options_dict': answer_options_dict
-                                                                    })
+        data = {'question': question_model,
+                'question_number': question_number,
+                'next_question_number': question_number + 1,
+                'answer_options_dict': answer_options_dict,
+                'question_settings_dict': question_settings_dict
+                }
+        return render(request, 'main/current_question_type1.html', data)

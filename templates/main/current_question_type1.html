@@ -14,7 +14,7 @@
                     <div class="alert alert-dark" role="alert">
                         <div class="card text-bg-light">
                             <div class="card-header">
-                                Вопрос №{{ next_question_number }}
+                                Вопрос №{{ question_number }}
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title">{{ question.text | safe }}</h5>
@@ -27,54 +27,48 @@
                             <div class="card-body">
                                 <div class="container">
                                     <div class="row row-conformity">
-                                        <div class="col">
+                                        <div class="col justify-content-start">
                                             {% for index, el in answer_options_dict.items %}
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="RadioOptions"
-                                                       value={{index}}
-                                                       id="flexRadioDefault{{index}}">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input form-check-input-success" type="radio" name="RadioOptions"
+                                                        value={{index}}
+                                                        id="flexRadioDefault{{index}}"
+                                                        {% if question_settings_dict.answered == True %} disabled {% endif %}
+                                                        {% if user_answer == index %} checked {% endif %}>
                                                 <label class="form-check-label" for="flexRadioDefault{{index}}">
                                                     <h5 class="card-title">{{el}}</h5>
                                                 </label>
                                             </div>
                                             {% endfor %}
                                         </div>
-                                        <div class="col">
-                                            <div class="to-bottom">
-                                                Я прижат книзу
-                                            </div>
+                                        <div class="col-auto align-self-end">
+                                            {% if question_settings_dict.answered == False %}
+                                                <button type="submit" class="btn btn-outline-primary btn-lg mb-1">Ответить</button>
+                                            {% elif question_settings_dict.right == True %}
+                                                <div class="alert alert-success text-center" role="alert">
+                                                    <h4 class="alert-heading pt-1">Верно!</h4>
+                                                </div>
+                                            {% elif question_settings_dict.right == False %}
+                                                <div class="alert alert-danger text-center" role="alert">
+                                                    <h4 class="alert-heading pt-1">Неверно!</h4>
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
-                                {% for index, el in answer_options_dict.items %}
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="RadioOptions" value={{index}}
-                                           id="flexRadioDefault{{index}}">
-                                    <label class="form-check-label" for="flexRadioDefault{{index}}">
-                                        {{el}}
-                                    </label>
-                                </div>
-                                {% endfor %}
                             </div>
                         </div>
-                        <legend>Данные пользователя</legend>
-                        <h6>Здорова</h6>
-                        {{ question.text | safe }}
-                        <br>
-                        <form>
-                            {% for index, el in answer_options_dict.items %}
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="RadioOptions" value={{index}}
-                                       id="flexRadioDefault{{index}}">
-                                <label class="form-check-label" for="flexRadioDefault{{index}}">
-                                    {{el}}
-                                </label>
-                            </div>
-                            {% endfor %}
-                        </form>
-                        <a href="{% url 'viewquestion' question_number=next_question_number %}" class="btn btn-primary" role="button" >Следующий вопрос</a>
-                        <br>
                     </div>
+                    {% if question_settings_dict.answered == True %}
+                        <div class="container">
+                            <div class="row justify-content-end">
+                                <div class="col-auto">
+                                    <a href="{% url 'viewquestion' question_number=next_question_number %}"
+                                       class="btn btn-warning btn-lg" role="button">Следующий вопрос</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
