@@ -102,6 +102,13 @@ def split_questions(x, n):
         list_of_questions.reverse()
         return list_of_questions
 
+def percents(qe_part, qe_all):
+    qe_part = int(qe_part)
+    qe_all = int(qe_all)
+    out = int(100 / qe_all * qe_part)
+    print(out)
+    return out
+
 
 def viewquestion(request, question_number):
     test = TestModel.objects.latest('id')
@@ -128,13 +135,17 @@ def viewquestion(request, question_number):
     if request.method == 'POST':
         answer = request.POST.get("RadioOptions") if request.POST.get("RadioOptions") else '0'
         if str(answer) == str(question_model.right_answer):
-            test.number_of_answered_questions += 1
-            test.number_of_correctly_answered_questions += 1
-            test.questions['questions'][str(question_number)]['answered'] = True
-            test.questions['questions'][str(question_number)]['right'] = True
-            test.save()
+            if not test.questions['questions'][str(question_number)]['answered']:
+                test.number_of_answered_questions += 1
+                test.number_of_correctly_answered_questions += 1
+                test.questions['questions'][str(question_number)]['answered'] = True
+                test.questions['questions'][str(question_number)]['right'] = True
+                test.save()
             question_settings_dict = test.questions['questions'][str(question_number)]
-            data = {'question': question_model,
+            data = {'test_data': test,
+                    'progress_correct': percents(test.number_of_correctly_answered_questions, test.number_of_questions),
+                    'progress_wrong': percents(test.number_of_incorrectly_answered_questions, test.number_of_questions),
+                    'question': question_model,
                     'question_number': question_number,
                     'next_question_number': question_number + 1,
                     'answer_options_dict': answer_options_dict,
@@ -143,12 +154,17 @@ def viewquestion(request, question_number):
                     }
             return render(request, 'main/current_question_type1.html', data)
         else:
-            test.number_of_answered_questions += 1
-            test.questions['questions'][str(question_number)]['answered'] = True
-            test.questions['questions'][str(question_number)]['right'] = False
-            test.save()
+            if not test.questions['questions'][str(question_number)]['answered']:
+                test.number_of_answered_questions += 1
+                test.number_of_incorrectly_answered_questions += 1
+                test.questions['questions'][str(question_number)]['answered'] = True
+                test.questions['questions'][str(question_number)]['right'] = False
+                test.save()
             question_settings_dict = test.questions['questions'][str(question_number)]
-            data = {'question': question_model,
+            data = {'test_data': test,
+                    'progress_correct': percents(test.number_of_correctly_answered_questions, test.number_of_questions),
+                    'progress_wrong': percents(test.number_of_incorrectly_answered_questions, test.number_of_questions),
+                    'question': question_model,
                     'question_number': question_number,
                     'next_question_number': question_number + 1,
                     'answer_options_dict': answer_options_dict,
@@ -157,7 +173,10 @@ def viewquestion(request, question_number):
                     }
             return render(request, 'main/current_question_type1.html', data)
     else:
-        data = {'question': question_model,
+        data = {'test_data': test,
+                'progress_correct': percents(test.number_of_correctly_answered_questions, test.number_of_questions),
+                'progress_wrong': percents(test.number_of_incorrectly_answered_questions, test.number_of_questions),
+                'question': question_model,
                 'question_number': question_number,
                 'next_question_number': question_number + 1,
                 'answer_options_dict': answer_options_dict,

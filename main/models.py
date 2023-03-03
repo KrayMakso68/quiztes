@@ -20,6 +20,7 @@ class TestModel(models.Model):
     number_of_questions = models.IntegerField('Количество вопросов')
     number_of_answered_questions = models.IntegerField('Количестов отвеченных вопросов', default=0)
     number_of_correctly_answered_questions = models.IntegerField('Количестов правильно отвеченных вопросов', default=0)
+    number_of_incorrectly_answered_questions = models.IntegerField('Количестов неправильно отвеченных вопросов', default=0)
     questions = models.JSONField('Вопросы теста')
 
     def __str__(self):

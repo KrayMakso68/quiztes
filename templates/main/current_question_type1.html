@@ -74,3 +74,24 @@
         </div>
     </form>
 {% endblock %}
+
+{% block footer %}
+     <footer class="footer d-flex flex-wrap justify-content-between align-items-center py-1 my-1 border-top" id="footer">
+
+        <p class="col-2 mb-0 text-muted text-center h6" style="white-space: nowrap">{{ test_data.surname_name }} {{ test_data.group_number }} гр.</p>
+
+        <div class="col-7">
+            <div class="progress shadow">
+                <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar"
+                     aria-valuenow="{{ progress_correct }}" aria-valuemin="0" aria-valuemax="{{ test_data.number_of_questions }}" style="width: {{ progress_correct }}%"></div>
+                <div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar"
+                     aria-valuenow="{{ progress_wrong }}" aria-valuemin="0" aria-valuemax="{{ test_data.number_of_questions }}" style="width: {{ progress_wrong }}%"></div>
+            </div>
+        </div>
+
+        <ul class="nav col-2 justify-content-end">
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">О программе</a></li>
+            <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Автор</a></li>
+        </ul>
+    </footer>
+{% endblock %}
