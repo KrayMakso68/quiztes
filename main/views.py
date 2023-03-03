@@ -102,11 +102,11 @@ def split_questions(x, n):
         list_of_questions.reverse()
         return list_of_questions
 
+
 def percents(qe_part, qe_all):
     qe_part = int(qe_part)
     qe_all = int(qe_all)
     out = int(100 / qe_all * qe_part)
-    print(out)
     return out
 
 

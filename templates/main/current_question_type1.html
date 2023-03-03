@@ -59,12 +59,21 @@
                             </div>
                         </div>
                     </div>
-                    {% if question_settings_dict.answered == True %}
+                    {% if question_settings_dict.answered == True and question_number != test_data.number_of_questions %}
                         <div class="container">
                             <div class="row justify-content-end">
                                 <div class="col-auto">
                                     <a href="{% url 'viewquestion' question_number=next_question_number %}"
                                        class="btn btn-warning btn-lg" role="button">Следующий вопрос</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% elif question_number == test_data.number_of_questions %}
+                        <div class="container">
+                            <div class="row justify-content-end">
+                                <div class="col-auto">
+                                    <a href="{% url 'viewquestion' question_number=next_question_number %}"
+                                       class="btn btn-warning btn-lg" role="button">Закончить тест</a>
                                 </div>
                             </div>
                         </div>
@@ -78,7 +87,7 @@
 {% block footer %}
      <footer class="footer d-flex flex-wrap justify-content-between align-items-center py-1 my-1 border-top" id="footer">
 
-        <p class="col-2 mb-0 text-muted text-center h6" style="white-space: nowrap">{{ test_data.surname_name }} {{ test_data.group_number }} гр.</p>
+        <p class="col-2 mb-0 text-muted text-center h6" >{{ test_data.surname_name }} {{ test_data.group_number }} гр.</p>
 
         <div class="col-7">
             <div class="progress shadow">
