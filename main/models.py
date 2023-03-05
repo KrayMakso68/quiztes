@@ -51,7 +51,7 @@ class QuestionsType1Model(models.Model):
         verbose_name_plural = 'Вопросы 1 типа'
 
     def __str__(self):
-        return self.text
+        return self.subject.name + " | " + self.text
 
 
 class QuestionsType2Model(models.Model):
@@ -74,12 +74,16 @@ class QuestionsType2Model(models.Model):
     }
     subject = models.ForeignKey('Subject', on_delete=models.SET_NULL, null=True)
     text = models.TextField('Текст вопроса')
-    answer_options = JSONField('Варианты ответов', schema=ITEMS_SCHEMA, file_handler='main/static/main/uploaded_img/')
+    answer_options = JSONField('Варианты ответов', schema=ITEMS_SCHEMA,
+                               help_text='Attention! Вырезайте изображения формул в примерно одинаковом масштабе!')
     right_answer = models.IntegerField('Номер верного ответа (по порядку)')
 
     class Meta:
         verbose_name = 'Вопрос 2 типа'
         verbose_name_plural = 'Вопросы 2 типа'
+
+    def __str__(self):
+        return self.subject.name + " | " + self.text
 
 
 class QuestionsType3Model(models.Model):
@@ -94,7 +98,9 @@ class QuestionsType3Model(models.Model):
     }
     subject = models.ForeignKey('Subject', on_delete=models.SET_NULL, null=True)
     text = models.TextField('Текст вопроса')
-    image = models.ImageField('Изображение для вопроса', upload_to='main/static/main/uploaded_img')
+    image = models.ImageField('Изображение для вопроса', upload_to='img_for_type3/',
+                              help_text='Attention! Для добавления формул при вырезании увеличивайте мастштаб! '
+                                        'Изображения будут выводиться в том же масштабе, что вы и вырезали!')
     answer_options = JSONField('Варианты ответов', schema=ITEMS_SCHEMA)
     right_answer = models.IntegerField('Номер верного ответа (по порядку)')
 
@@ -102,14 +108,5 @@ class QuestionsType3Model(models.Model):
         verbose_name = 'Вопрос 3 типа'
         verbose_name_plural = 'Вопросы 3 типа'
 
-
-class QuestionsType4Model(models.Model):
-    subject = models.ForeignKey('Subject', on_delete=models.SET_NULL, null=True)
-    text = models.TextField('Текст вопроса')
-    right_answer = models.DecimalField("Числовой ответ (разделитель ' , ')", decimal_places=5, max_digits=5)
-
-    class Meta:
-        verbose_name = 'Вопрос 4 типа'
-        verbose_name_plural = 'Вопросы 4 типа'
-# для загрузки файлов
-# file_handler='main/static/main/uploaded_img'
+    def __str__(self):
+        return self.subject.name + " | " + self.text

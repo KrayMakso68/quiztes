@@ -30,13 +30,14 @@
                                         <div class="col justify-content-start">
                                             {% for index, el in answer_options_dict.items %}
                                             <div class="form-check mb-2">
-                                                <input class="form-check-input form-check-input-success" type="radio" name="RadioOptions"
+                                                <input class="form-check-input form-check-input-success " type="radio" name="RadioOptions"
+                                                        style="position: relative; top: 25px"
                                                         value={{index}}
                                                         id="flexRadioDefault{{index}}"
                                                         {% if question_settings_dict.answered == True %} disabled {% endif %}
                                                         {% if user_answer == index %} checked {% endif %}>
                                                 <label class="form-check-label" for="flexRadioDefault{{index}}">
-                                                    <h5 class="card-title">{{el}}</h5>
+                                                    <img src="{% get_media_prefix %}img_for_type2/{{ el.img_input }}" alt="Logo" class="img-fluid">
                                                 </label>
                                             </div>
                                             {% endfor %}
