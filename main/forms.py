@@ -1,6 +1,5 @@
 from django import forms
 from django.forms import ValidationError
-
 from main.models import Subject
 
 
@@ -56,6 +55,7 @@ class AddTestForm(forms.Form):
         words_number = len(name.split())
         if words_number != 2:
             raise ValidationError(f'Фамилия и Имя это 2 слова, а не {words_number}!')
+        return name
 
     def clean_number_of_questions(self):
         number = self.cleaned_data['number_of_questions']
