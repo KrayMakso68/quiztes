@@ -18,17 +18,17 @@ def index(request):
             test_type = form.cleaned_data["test_type"]
 
             if test_type == '2':
-                subjects = [1, 2, 3, 4, 5]
+                subjects = [1, 2, 3, 4, 5, 6]
             elif test_type == '3':
-                subjects = [6, 7, 8, 9, 10]
+                subjects = [7, 8, 9]
             elif test_type == '4':
-                subjects = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                subjects = [1, 2, 3, 4, 5, 6, 7, 8, 9]
             else:
                 subjects = form.cleaned_data["check_subjects"]
-                # print(subjects)
-                # print(test.number_of_questions)
+                print(subjects)
+                print(test.number_of_questions)
             questions_for_subjects_list = split_questions(test.number_of_questions, len(subjects))
-            # print(questions_for_subjects_list)
+            print(questions_for_subjects_list)
             questions_types = 3                # types of questions in the database
             questions_json_dict = {'questions': {}}
             all_questions_type1 = QuestionsType1Model.objects.all()
@@ -49,21 +49,21 @@ def index(request):
                 # ...add other types
 
                 for que in questions_type1:
-                    questions_json_dict['questions'][add_question_number] = {'type': '1',
+                    questions_json_dict['questions'][add_question_number] = {'type': 1,
                                                                              'id': que.id,
                                                                              'answered': False,
                                                                              'right': None
                                                                              }
                     add_question_number += 1
                 for que in questions_type2:
-                    questions_json_dict['questions'][add_question_number] = {'type': '2',
+                    questions_json_dict['questions'][add_question_number] = {'type': 2,
                                                                              'id': que.id,
                                                                              'answered': False,
                                                                              'right': None
                                                                              }
                     add_question_number += 1
                 for que in questions_type3:
-                    questions_json_dict['questions'][add_question_number] = {'type': '3',
+                    questions_json_dict['questions'][add_question_number] = {'type': 3,
                                                                              'id': que.id,
                                                                              'answered': False,
                                                                              'right': None
@@ -85,11 +85,11 @@ def viewquestion(request, question_number):
     question_id = question_settings_dict['id']
 
     question_model = None
-    if question_type == '1':
+    if question_type == 1:
         question_model = QuestionsType1Model.objects.get(id=question_id)
-    elif question_type == '2':
+    elif question_type == 2:
         question_model = QuestionsType2Model.objects.get(id=question_id)
-    elif question_type == '3':
+    elif question_type == 3:
         question_model = QuestionsType3Model.objects.get(id=question_id)
 
     answer_options_dict = {}
@@ -97,8 +97,10 @@ def viewquestion(request, question_number):
         answer_options_dict[i+1] = question_model.answer_options[i]
 
     if request.method == 'POST':
-        answer = request.POST.get("RadioOptions") if request.POST.get("RadioOptions") else '0'
-        if str(answer) == str(question_model.right_answer):
+        answer = int(request.POST.get("RadioOptions") if request.POST.get("RadioOptions") else 0)
+        print(answer)
+        print(type(answer))
+        if answer == question_model.right_answer:
             if not test.questions['questions'][str(question_number)]['answered']:
                 test.number_of_answered_questions += 1
                 test.number_of_correctly_answered_questions += 1
@@ -114,7 +116,7 @@ def viewquestion(request, question_number):
                     'next_question_number': question_number + 1,
                     'answer_options_dict': answer_options_dict,
                     'question_settings_dict': question_settings_dict,
-                    'user_answer': int(answer)
+                    'user_answer': answer
                     }
             return render(request,  f'main/current_question_type{question_type}.html', data)
         else:
@@ -133,7 +135,7 @@ def viewquestion(request, question_number):
                     'next_question_number': question_number + 1,
                     'answer_options_dict': answer_options_dict,
                     'question_settings_dict': question_settings_dict,
-                    'user_answer': int(answer)
+                    'user_answer': answer
                     }
             return render(request,  f'main/current_question_type{question_type}.html', data)
     else:
@@ -172,8 +174,6 @@ def split_questions(x, n):
 
 
 def percents(qe_part, qe_all):
-    qe_part = int(qe_part)
-    qe_all = int(qe_all)
     out_percents = int(100 / qe_all * qe_part)
     return out_percents
 
