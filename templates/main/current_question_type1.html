@@ -73,7 +73,7 @@
                             <div class="row justify-content-end">
                                 <div class="col-auto">
                                     <a href="{% url 'view-results' %}"
-                                       class="btn btn-warning btn-lg" role="button">Закончить тест</a>
+                                       class="btn btn-warning btn-lg" role="button">Завершить тест</a>
                                 </div>
                             </div>
                         </div>
@@ -99,8 +99,7 @@
         </div>
 
         <ul class="nav col-2 justify-content-end">
-            <li class="nav-item"><a href="{% url 'view-about' %}" class="nav-link px-2 text-muted">О программе</a></li>
-            <li class="nav-item"><a href="{% url 'view-author' %}" class="nav-link px-2 text-muted">Автор</a></li>
+            <li class="nav-item"><a href="{% url 'view-results' %}" class="nav-link px-2"><p class="h6 text-danger mb-0">Завершить досрочно</p></a></li>
         </ul>
     </footer>
 {% endblock %}
