@@ -22,6 +22,8 @@ from main import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('json-file-handler/', views.file_handler),
+    path('about/', views.about, name='view-about'),
+    path('author/', views.author, name='view-author'),
     path('', include('main.urls')),
 
 ]

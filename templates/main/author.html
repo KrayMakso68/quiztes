@@ -1,0 +1,46 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+
+{% block title %}
+    О программе
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="container" style="margin-top: 2%;">
+            <div class="row justify-content-center">
+                <div class="col-8">
+                    <div class="alert alert-dark mb-5" role="alert">
+                        <div class="container text-center p-0">
+                            <h4 class="alert-heading">Автор</h4>
+                            <hr>
+                            <div class="row justify-content-sm-center">
+                                <div class="col-8">
+                                    <h6 class="mb-4">к-т Краюшкин Максим 314 учебная группа</h6>
+                                    <a href="{{ return_path }}"
+                                       class="btn btn-warning btn-lg" role="button">Вернуться</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block footer %}
+     <footer class="footer d-flex flex-wrap justify-content-between align-items-center border-top" id="footer">
+
+        <p class="col-2 mb-0 text-muted">Академия ФСО России</p>
+
+        <div class="col-6">
+
+        </div>
+
+        <ul class="nav col-2 justify-content-end">
+
+        </ul>
+    </footer>
+{% endblock %}

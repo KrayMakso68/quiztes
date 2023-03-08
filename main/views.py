@@ -25,10 +25,10 @@ def index(request):
                 subjects = [1, 2, 3, 4, 5, 6, 7, 8, 9]
             else:
                 subjects = form.cleaned_data["check_subjects"]
-                print(subjects)
-                print(test.number_of_questions)
+                # print(subjects)
+                # print(test.number_of_questions)
             questions_for_subjects_list = split_questions(test.number_of_questions, len(subjects))
-            print(questions_for_subjects_list)
+            # print(questions_for_subjects_list)
             questions_types = 3                # types of questions in the database
             questions_json_dict = {'questions': {}}
             all_questions_type1 = QuestionsType1Model.objects.all()
@@ -39,7 +39,7 @@ def index(request):
                 subject_number = subjects[i]
                 questions_in_subject = questions_for_subjects_list[i]
                 questions_for_questiontype_list = split_questions(questions_in_subject, questions_types)
-                print(questions_for_questiontype_list)
+                # print(questions_for_questiontype_list)
                 questions_type1 = all_questions_type1.filter(subject__subject_number=subject_number).order_by('?')[
                                   :questions_for_questiontype_list[0]]
                 questions_type2 = all_questions_type2.filter(subject__subject_number=subject_number).order_by('?')[
@@ -98,8 +98,8 @@ def viewquestion(request, question_number):
 
     if request.method == 'POST':
         answer = int(request.POST.get("RadioOptions") if request.POST.get("RadioOptions") else 0)
-        print(answer)
-        print(type(answer))
+        # print(answer)
+        # print(type(answer))
         if answer == question_model.right_answer:
             if not test.questions['questions'][str(question_number)]['answered']:
                 test.number_of_answered_questions += 1
@@ -148,7 +148,42 @@ def viewquestion(request, question_number):
                 'answer_options_dict': answer_options_dict,
                 'question_settings_dict': question_settings_dict
                 }
-        return render(request,  f'main/current_question_type{question_type}.html', data)
+        return render(request, f'main/current_question_type{question_type}.html', data)
+
+
+def viewresults(request):
+    test = TestModel.objects.latest('id')
+    number_of_unanswered_questions = test.number_of_questions - test.number_of_answered_questions
+    number_of_correctly_answered_questions = test.number_of_correctly_answered_questions
+    number_of_incorrectly_answered_questions = test.number_of_incorrectly_answered_questions
+    surname_name = test.surname_name
+    group_number = test.group_number
+    result = percents(number_of_correctly_answered_questions, test.number_of_questions)
+    data = {
+        'number_of_correctly_answered_questions': number_of_correctly_answered_questions,
+        'number_of_incorrectly_answered_questions': number_of_incorrectly_answered_questions,
+        'number_of_unanswered_questions': number_of_unanswered_questions,
+        'surname_name': surname_name,
+        'group_number': group_number,
+        'result': result
+    }
+    return render(request, 'main/Results.html', data)
+
+
+def about(request):
+    return_path = request.META.get('HTTP_REFERER', '/')
+    data = {
+        'return_path': return_path
+    }
+    return render(request, 'main/about.html', data)
+
+
+def author(request):
+    return_path = request.META.get('HTTP_REFERER', '/')
+    data = {
+        'return_path': return_path
+    }
+    return render(request, 'main/author.html', data)
 
 
 def split_questions(x, n):
