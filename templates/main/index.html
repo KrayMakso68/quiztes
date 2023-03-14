@@ -109,17 +109,16 @@
 {% endblock %}
 
 {% block footer %}
-    <footer class="footer d-flex flex-wrap justify-content-between align-items-center py-1 my-1 border-top" id="footer">
+    <footer class="footer d-flex flex-wrap justify-content-between align-items-center py-0 my-0 border-top" id="footer">
 
-        <p class="col-2 mb-0 text-muted">Академия ФСО России</p>
+        <p class="col-2 my-0 pt-0 text-muted"><img src="{% static 'main/img/fso.svg' %}" alt="Logo" width="25" class="mx-2">Академия ФСО России</p>
 
-        <div class="col-6">
-
-        </div>
+{#        <div class="col-6 text-center">#}
+{#        </div>#}
 
         <ul class="nav col-2 justify-content-end">
-            <li class="nav-item"><a href="{% url 'view-about' %}" class="nav-link px-2 text-muted">О программе</a></li>
-            <li class="nav-item"><a href="{% url 'view-author' %}" class="nav-link px-2 text-muted">Автор</a></li>
+            <li class="nav-item"><a href="{% url 'view-about' %}" class="nav-link px-2 pt-1 text-muted">О программе</a></li>
+            <li class="nav-item"><a href="{% url 'view-author' %}" class="nav-link px-2 pt-1 text-muted">Автор</a></li>
         </ul>
     </footer>
 {% endblock %}

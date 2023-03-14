@@ -29,7 +29,7 @@ def index(request):
                 print(test.number_of_questions)
             questions_for_subjects_list = split_questions(test.number_of_questions, len(subjects))
             print(questions_for_subjects_list)
-            questions_types = 3                # types of questions in the database
+            questions_types = 3  # types of questions in the database
             questions_json_dict = {'questions': {}}
             all_questions_type1 = QuestionsType1Model.objects.all()
             all_questions_type2 = QuestionsType2Model.objects.all()
@@ -48,7 +48,7 @@ def index(request):
                                   :questions_for_questiontype_list[2]]
                 # ...add other types
 
-                for que in questions_type1:
+                for que in questions_type1:  # TODO function create json question settings
                     questions_json_dict['questions'][add_question_number] = {'type': 1,
                                                                              'id': que.id,
                                                                              'answered': False,
@@ -89,12 +89,12 @@ def viewquestion(request, question_number):
         question_model = QuestionsType1Model.objects.get(id=question_id)
     elif question_type == 2:
         question_model = QuestionsType2Model.objects.get(id=question_id)
-    elif question_type == 3:
+    else:
         question_model = QuestionsType3Model.objects.get(id=question_id)
 
     answer_options_dict = {}
     for i in range(len(question_model.answer_options)):
-        answer_options_dict[i+1] = question_model.answer_options[i]
+        answer_options_dict[i + 1] = question_model.answer_options[i]
 
     if request.method == 'POST':
         answer = int(request.POST.get("RadioOptions") if request.POST.get("RadioOptions") else 0)
@@ -116,7 +116,7 @@ def viewquestion(request, question_number):
                     'question_settings_dict': question_settings_dict,
                     'user_answer': answer
                     }
-            return render(request,  f'main/current_question_type{question_type}.html', data)
+            return render(request, f'main/current_question_type{question_type}.html', data)
         else:
             if not test.questions['questions'][str(question_number)]['answered']:
                 test.number_of_answered_questions += 1
@@ -135,7 +135,7 @@ def viewquestion(request, question_number):
                     'question_settings_dict': question_settings_dict,
                     'user_answer': answer
                     }
-            return render(request,  f'main/current_question_type{question_type}.html', data)
+            return render(request, f'main/current_question_type{question_type}.html', data)
     else:
         data = {'test_data': test,
                 'progress_correct': percents(test.number_of_correctly_answered_questions, test.number_of_questions),
