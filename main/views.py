@@ -1,8 +1,8 @@
-import os
 from django.contrib.auth.decorators import login_required
-from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, redirect
-from django.http import Http404, JsonResponse, HttpResponse
+from django.http import JsonResponse
+from easy_thumbnails.files import get_thumbnailer
+
 from main.forms import AddTestForm
 from main.models import TestModel, QuestionsType1Model, QuestionsType2Model, QuestionsType3Model
 
@@ -213,13 +213,18 @@ def percents(qe_part, qe_all):
 
 @login_required
 def file_handler(request):
-    directory_name = 'img_for_type2'
-    fs = FileSystemStorage()
     if request.method == 'POST':
         file = request.FILES['file']
-        path = os.path.join(fs.location, directory_name, file.name)
-        fs.save(path, file)
+        directory_name = 'img_for_type2/' + file.name
+        options = {'autocrop': True, 'size': (0, 80), 'quality': 95}
+        get_thumbnailer(file, relative_name=directory_name).get_thumbnail(options, save=True)
         return JsonResponse({'value': file.name})
+
+        # file = request.FILES['file']
+        # directory_name = 'img_for_type2/' + file.name
+        # options = {'autocrop': True, 'size': (0, 80)}
+        # get_thumbnailer(file, relative_name=directory_name).get_thumbnail(options)
+        # return JsonResponse({'value': file.name})
 
     # elif request.method == 'DELETE':
     #     trigger = request.GET.get('trigger')
