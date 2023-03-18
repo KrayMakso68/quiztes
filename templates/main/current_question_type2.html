@@ -1,4 +1,5 @@
 {% extends 'main/layout.html' %}
+{% load thumbnail %}
 {% load static %}
 
 {% block title %}
@@ -29,17 +30,19 @@
                                     <div class="row row-conformity">
                                         <div class="col justify-content-start">
                                             {% for index, el in answer_options_dict.items %}
-                                            <div class="form-check mb-2">
+                                            {% with url="/media/img_for_type2/"|add:el.img_input|add:".0x80_q100_autocrop_detail.png" %}
+                                            <div class="form-check mb-3">
                                                 <input class="form-check-input form-check-input-success " type="radio" name="RadioOptions"
-                                                        style="position: relative; top: 25px"
+                                                        style="position: relative; top: 20px"
                                                         value={{index}}
                                                         id="flexRadioDefault{{index}}"
                                                         {% if question_settings_dict.answered == True %} disabled {% endif %}
                                                         {% if user_answer == index %} checked {% endif %}>
                                                 <label class="form-check-label" for="flexRadioDefault{{index}}">
-                                                    <img src="{% get_media_prefix %}img_for_type2/{{ el.img_input }}.0x80_q95_autocrop.png" alt="Logo" class="img-fluid">
+                                                    <img src="{{ url }}" alt="Logo" class="img-fluid">
                                                 </label>
                                             </div>
+                                            {% endwith %}
                                             {% endfor %}
                                         </div>
                                         <div class="col-auto align-self-end">

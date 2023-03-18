@@ -21,7 +21,7 @@ DJANGO_JSONFORM = {
 }
 THUMBNAIL_ALIASES = {
     '': {
-        'type1': {'size': (0, 50), 'crop': 'smart'},
+        'type3': {'size': (0, 200), 'crop': 'smart'},
     },
 }
 

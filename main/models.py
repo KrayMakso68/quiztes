@@ -1,5 +1,6 @@
 from django.db import models
 from django_jsonform.models.fields import JSONField
+from easy_thumbnails.fields import ThumbnailerImageField
 
 
 class Subject(models.Model):
@@ -20,7 +21,8 @@ class TestModel(models.Model):
     number_of_questions = models.IntegerField('Количество вопросов')
     number_of_answered_questions = models.IntegerField('Количестов отвеченных вопросов', default=0)
     number_of_correctly_answered_questions = models.IntegerField('Количестов правильно отвеченных вопросов', default=0)
-    number_of_incorrectly_answered_questions = models.IntegerField('Количестов неправильно отвеченных вопросов', default=0)
+    number_of_incorrectly_answered_questions = models.IntegerField('Количестов неправильно отвеченных вопросов',
+                                                                   default=0)
     questions = models.JSONField('Вопросы теста')
 
     def __str__(self):
@@ -96,11 +98,17 @@ class QuestionsType3Model(models.Model):
         "minItems": 2,
         "maxItems": 6
     }
+    options = {'autocrop': True,
+               'size': (0, 200),
+               'quality': 100,
+               'sharpen': True
+               }
     subject = models.ForeignKey('Subject', on_delete=models.SET_NULL, null=True)
     text = models.TextField('Текст вопроса')
-    image = models.ImageField('Изображение для вопроса', upload_to='img_for_type3/',
-                              help_text='Attention! Для добавления формул при вырезании увеличивайте мастштаб! '
-                                        'Изображения будут выводиться в том же масштабе, что вы и вырезали!')
+    image = ThumbnailerImageField('Изображение для вопроса', resize_source=options,
+                                  upload_to='img_for_type3/',
+                                  help_text='Attention! Для добавления формул при вырезании увеличивайте мастштаб! '
+                                            'Изображения будут выводиться в том же масштабе, что вы и вырезали!')
     answer_options = JSONField('Варианты ответов', schema=ITEMS_SCHEMA)
     right_answer = models.IntegerField('Номер верного ответа (по порядку)')
 

@@ -216,7 +216,7 @@ def file_handler(request):
     if request.method == 'POST':
         file = request.FILES['file']
         directory_name = 'img_for_type2/' + file.name
-        options = {'autocrop': True, 'size': (0, 80), 'quality': 95}
+        options = {'autocrop': True, 'size': (0, 80), 'detail': True, 'quality': 100}
         get_thumbnailer(file, relative_name=directory_name).get_thumbnail(options, save=True)
         return JsonResponse({'value': file.name})
 

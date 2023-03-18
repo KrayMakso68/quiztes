@@ -1,5 +1,6 @@
 {% extends 'main/layout.html' %}
 {% load static %}
+{% load thumbnail %}
 
 {% block title %}
     Вопрос {{ question_number }}
@@ -17,7 +18,7 @@
                                 Вопрос №{{ question_number }}
                             </div>
                             <div class="card-body">
-                                <img src="{% get_media_prefix %}{{ question.image }}" alt="QuestionImg" class="img-fluid mb-2">
+                                <img src="{{ question.image.url }}" alt="QuestionImg" class="img-fluid mb-2">
                                 <h5 class="card-title">{{ question.text | safe }}</h5>
                             </div>
                         </div>
