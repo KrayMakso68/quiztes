@@ -30,19 +30,18 @@
                                     <div class="row row-conformity">
                                         <div class="col justify-content-start">
                                             {% for index, el in answer_options_dict.items %}
-                                            {% with url="/media/img_for_type2/"|add:el.img_input|add:".0x80_q100_autocrop_detail.png" %}
                                             <div class="form-check mb-3">
-                                                <input class="form-check-input form-check-input-success " type="radio" name="RadioOptions"
-                                                        style="position: relative; top: 20px"
+                                                <input class="form-check-input form-check-input-success {% if question.right_answer == index and question_settings_dict.answered == True %}
+                                                        bg-success{% endif %}" type="radio" name="RadioOptions"
+                                                        style="position: relative; top: 10px"
                                                         value={{index}}
                                                         id="flexRadioDefault{{index}}"
                                                         {% if question_settings_dict.answered == True %} disabled {% endif %}
                                                         {% if user_answer == index %} checked {% endif %}>
                                                 <label class="form-check-label" for="flexRadioDefault{{index}}">
-                                                    <img src="{{ url }}" alt="Logo" class="img-fluid">
+                                                    <img src="{{ el.img_input }}" alt="Logo" class="img-fluid">
                                                 </label>
                                             </div>
-                                            {% endwith %}
                                             {% endfor %}
                                         </div>
                                         <div class="col-auto align-self-end">
@@ -96,9 +95,9 @@
         <div class="col-7">
             <div class="progress shadow">
                 <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar"
-                     aria-valuenow="{{ progress_correct }}" aria-valuemin="0" aria-valuemax="{{ test_data.number_of_questions }}" style="width: {{ progress_correct }}%"></div>
+                     aria-valuenow="{{ progress_correct }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress_correct }}%"></div>
                 <div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar"
-                     aria-valuenow="{{ progress_wrong }}" aria-valuemin="0" aria-valuemax="{{ test_data.number_of_questions }}" style="width: {{ progress_wrong }}%"></div>
+                     aria-valuenow="{{ progress_wrong }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress_wrong }}%"></div>
             </div>
         </div>
 

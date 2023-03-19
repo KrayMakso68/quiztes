@@ -15,20 +15,11 @@ def index(request):
             test.surname_name = form.cleaned_data["surname_name"]
             test.group_number = form.cleaned_data["group_number"]
             test.number_of_questions = form.cleaned_data["number_of_questions"]
-            test_type = form.cleaned_data["test_type"]
-
-            if test_type == '2':
-                subjects = [1, 2, 3, 4, 5, 6]
-            elif test_type == '3':
-                subjects = [7, 8, 9]
-            elif test_type == '4':
-                subjects = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-            else:
-                subjects = form.cleaned_data["check_subjects"]
-                print(subjects)
-                print(test.number_of_questions)
+            subjects = get_subjects_list(form)
+            # print(subjects)
+            # print(test.number_of_questions)
             questions_for_subjects_list = split_questions(test.number_of_questions, len(subjects))
-            print(questions_for_subjects_list)
+            # print(questions_for_subjects_list)
             questions_types = 3  # types of questions in the database
             questions_json_dict = {'questions': {}}
             all_questions_type1 = QuestionsType1Model.objects.all()
@@ -48,26 +39,14 @@ def index(request):
                                   :questions_for_questiontype_list[2]]
                 # ...add other types
 
-                for que in questions_type1:  # TODO function create json question settings
-                    questions_json_dict['questions'][add_question_number] = {'type': 1,
-                                                                             'id': que.id,
-                                                                             'answered': False,
-                                                                             'right': None
-                                                                             }
+                for que in questions_type1:
+                    questions_json_dict['questions'][add_question_number] = set_question_dict(1, que.id)
                     add_question_number += 1
                 for que in questions_type2:
-                    questions_json_dict['questions'][add_question_number] = {'type': 2,
-                                                                             'id': que.id,
-                                                                             'answered': False,
-                                                                             'right': None
-                                                                             }
+                    questions_json_dict['questions'][add_question_number] = set_question_dict(2, que.id)
                     add_question_number += 1
                 for que in questions_type3:
-                    questions_json_dict['questions'][add_question_number] = {'type': 3,
-                                                                             'id': que.id,
-                                                                             'answered': False,
-                                                                             'right': None
-                                                                             }
+                    questions_json_dict['questions'][add_question_number] = set_question_dict(3, que.id)
                     add_question_number += 1
 
             test.questions = questions_json_dict
@@ -82,16 +61,7 @@ def viewquestion(request, question_number):
     test = TestModel.objects.latest('id')
     question_settings_dict = test.questions['questions'][str(question_number)]
     question_type = question_settings_dict['type']
-    question_id = question_settings_dict['id']
-
-    question_model = None
-    if question_type == 1:
-        question_model = QuestionsType1Model.objects.get(id=question_id)
-    elif question_type == 2:
-        question_model = QuestionsType2Model.objects.get(id=question_id)
-    else:
-        question_model = QuestionsType3Model.objects.get(id=question_id)
-
+    question_model = get_question_model(question_settings_dict, question_type)
     answer_options_dict = {}
     for i in range(len(question_model.answer_options)):
         answer_options_dict[i + 1] = question_model.answer_options[i]
@@ -211,21 +181,46 @@ def percents(qe_part, qe_all):
     return out_percents
 
 
+def set_question_dict(type_number, que_id):
+    return {'type': type_number,
+            'id': que_id,
+            'answered': False,
+            'right': None
+            }
+
+
+def get_subjects_list(form):
+    test_type = form.cleaned_data["test_type"]
+    if test_type == '2':
+        subjects = [1, 2, 3, 4, 5, 6]
+    elif test_type == '3':
+        subjects = [7, 8, 9]
+    elif test_type == '4':
+        subjects = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    else:
+        subjects = form.cleaned_data["check_subjects"]
+    return subjects
+
+
+def get_question_model(question_settings_dict, question_type):
+    question_id = question_settings_dict['id']
+    if question_type == 1:
+        question_model = QuestionsType1Model.objects.get(id=question_id)
+    elif question_type == 2:
+        question_model = QuestionsType2Model.objects.get(id=question_id)
+    else:
+        question_model = QuestionsType3Model.objects.get(id=question_id)
+    return question_model
+
+
 @login_required
 def file_handler(request):
     if request.method == 'POST':
         file = request.FILES['file']
         directory_name = 'img_for_type2/' + file.name
         options = {'autocrop': True, 'size': (0, 80), 'detail': True, 'quality': 100}
-        get_thumbnailer(file, relative_name=directory_name).get_thumbnail(options, save=True)
-        return JsonResponse({'value': file.name})
-
-        # file = request.FILES['file']
-        # directory_name = 'img_for_type2/' + file.name
-        # options = {'autocrop': True, 'size': (0, 80)}
-        # get_thumbnailer(file, relative_name=directory_name).get_thumbnail(options)
-        # return JsonResponse({'value': file.name})
-
+        thumb = get_thumbnailer(file, relative_name=directory_name).get_thumbnail(options, save=True)
+        return JsonResponse({'value': thumb.url})
     # elif request.method == 'DELETE':
     #     trigger = request.GET.get('trigger')
     #     file_names = request.GET.getlist('value')
