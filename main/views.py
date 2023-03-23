@@ -77,8 +77,8 @@ def viewquestion(request, question_number):
                 test.save()
             question_settings_dict = test.questions['questions'][str(question_number)]
             data = {'test_data': test,
-                    'progress_correct': percents(test.number_of_correctly_answered_questions, test.number_of_questions),
-                    'progress_wrong': percents(test.number_of_incorrectly_answered_questions, test.number_of_questions),
+                    'progress_correct': percents(test.number_of_correctly_answered_questions, test.number_of_questions, progressbar=True),
+                    'progress_wrong': percents(test.number_of_incorrectly_answered_questions, test.number_of_questions, progressbar=True),
                     'question': question_model,
                     'question_number': question_number,
                     'next_question_number': question_number + 1,
@@ -96,8 +96,8 @@ def viewquestion(request, question_number):
                 test.save()
             question_settings_dict = test.questions['questions'][str(question_number)]
             data = {'test_data': test,
-                    'progress_correct': percents(test.number_of_correctly_answered_questions, test.number_of_questions),
-                    'progress_wrong': percents(test.number_of_incorrectly_answered_questions, test.number_of_questions),
+                    'progress_correct': percents(test.number_of_correctly_answered_questions, test.number_of_questions, progressbar=True),
+                    'progress_wrong': percents(test.number_of_incorrectly_answered_questions, test.number_of_questions, progressbar=True),
                     'question': question_model,
                     'question_number': question_number,
                     'next_question_number': question_number + 1,
@@ -108,8 +108,8 @@ def viewquestion(request, question_number):
             return render(request, f'main/current_question_type{question_type}.html', data)
     else:
         data = {'test_data': test,
-                'progress_correct': percents(test.number_of_correctly_answered_questions, test.number_of_questions),
-                'progress_wrong': percents(test.number_of_incorrectly_answered_questions, test.number_of_questions),
+                'progress_correct': percents(test.number_of_correctly_answered_questions, test.number_of_questions, progressbar=True),
+                'progress_wrong': percents(test.number_of_incorrectly_answered_questions, test.number_of_questions, progressbar=True),
                 'question': question_model,
                 'question_number': question_number,
                 'next_question_number': question_number + 1,
@@ -176,9 +176,12 @@ def split_questions(x, n):
         return list_of_questions
 
 
-def percents(qe_part, qe_all):
-    out_percents = int(100 / qe_all * qe_part)
-    return out_percents
+def percents(qe_part, qe_all, progressbar=False):
+    out_percents = round(100 / qe_all * qe_part, 1)
+    if progressbar:
+        return str(out_percents).replace(',', '.')
+    else:
+        return out_percents
 
 
 def set_question_dict(type_number, que_id):
