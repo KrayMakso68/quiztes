@@ -24,6 +24,7 @@ class TestModel(models.Model):
     number_of_incorrectly_answered_questions = models.IntegerField('Количестов неправильно отвеченных вопросов',
                                                                    default=0)
     questions = models.JSONField('Вопросы теста')
+    completed = models.BooleanField('Завершён', default=False)
 
     def __str__(self):
         return self.surname_name

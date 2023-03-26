@@ -11,16 +11,122 @@
         <div class="container" style="margin-top: 2%;">
             <div class="row justify-content-center">
                 <div class="col-8">
-                    <div class="alert alert-dark mb-5" role="alert">
+                    <div class="alert alert-dark" role="alert">
                         <div class="container text-center p-0">
                             <h4 class="alert-heading">О программе</h4>
                             <hr>
                             <div class="row justify-content-sm-center">
                                 <div class="col-8">
-                                    <h6 class="mb-4">Данная программа была разработана как модуль обучающей программы по
-                                        дисциплине Теория Электросвязи 43 кафедра</h6>
+                                    <h6 class="mb-4">Программа разработана как подмодуль обучающей программы по
+                                        дисциплине Теория Электросвязи, кафедра 43.</h6>
                                     <a href="{{ return_path }}"
                                        class="btn btn-warning btn-lg" role="button">Вернуться</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-8">
+                    <div class="alert alert-dark mb-5" role="alert">
+                        <div class="container p-0">
+                            <h4 class="alert-heading text-center">Руководство пользователя</h4>
+                            <hr>
+                            <h6 class="mb-3">Программа предоставляет простой интерфейс, удобный для использования на
+                                любом виде устройств.
+                            </h6>
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingOne">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                                aria-controls="flush-collapseOne" >
+                                            1) Ввод данных пользователя и параметров теста
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse"
+                                         aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            <div class="row m-0 p-0">
+                                                <div class="col-6 m-0 p-0">
+                                                    <img src="{% static 'main/img/startpage.png' %}" alt="logo43" class="img-fluid rounded">
+                                                </div>
+                                                <div class="col">
+                                                    <strong>1.</strong> Введите свою Фамилию и Имя в корректном формате через пробел, а также номер учебной группы.<br>
+                                                    <strong>2.</strong> Выберите вид теста, либо необходимые темы, если выбран пункт "Свой тест".<br>
+                                                    <strong>3.</strong> Введите необходимое количество вопросов. <br><br>
+                                                    <strong>Количество вопросов не может быть меньше количества выбранных тем!</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingTwo">
+                                        <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo"
+                                                aria-expanded="false" aria-controls="flush-collapseTwo">
+                                            2) Прохождение теста
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseTwo" class="accordion-collapse collapse"
+                                         aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                           <div class="row m-0 p-0">
+                                                <div class="col-6 m-0 mb-3 p-0">
+                                                    <img src="{% static 'main/img/questionpage.png' %}" alt="logo43" class="img-fluid rounded">
+                                                </div>
+                                                <div class="col">
+                                                    <strong>1.</strong> Внимательно прочитайте вопрос и варианты ответа.<br>
+                                                    <strong>2.</strong> Выберите подходящий вариант ответа.<br>
+                                                    <strong>3.</strong> Нажмите кнопку "Ответить". <br><br>
+                                                    <strong>Если ответить без выбора варианта ответа, то вопрос будет считаться отвеченным неверно!</strong>
+                                                </div>
+                                            </div>
+                                            <div class="row m-0 p-0">
+                                                <div class="col-6 m-0 p-0">
+                                                    <img src="{% static 'main/img/questionpage1.png' %}" alt="logo43" class="img-fluid rounded">
+                                                </div>
+                                                <div class="col">
+                                                    После нажатия вы увидите результат своего ответа.<br>
+                                                    Чтобы перейти к следующему вопросу, нажмите кнопку "Следующий вопрос".<br>
+                                                    Если вопрос послений, появится кнопка "Завершить тест".<br><br>
+                                                    <strong>Вы можете в любой момент закончить тест, нажав на кнопку "Завершить досрочно"!</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingThree">
+                                        <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
+                                                aria-expanded="false" aria-controls="flush-collapseThree">
+                                            3) Результаты
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseThree" class="accordion-collapse collapse"
+                                         aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                             <div class="row m-0 p-0">
+                                                <div class="col-6 m-0 p-0">
+                                                    <img src="{% static 'main/img/resultpage.png' %}" alt="logo43" class="img-fluid rounded">
+                                                </div>
+                                                <div class="col">
+                                                    При завершении Вы попадаете на страницу результатов.<br>
+                                                    В зависомости от результата страница меняет свой оттенок:<br>
+                                                    <ul>
+                                                        <li>Красный - '2'</li>
+                                                        <li>Жёлтый - '3'</li>
+                                                        <li>Синий - '4'</li>
+                                                        <li>Зелёный - '5'</li>
+                                                    </ul>
+                                                    Есть есть вопросы на которые был дан неверный ответ, то с ними можно ознакомиться в таблице "Неверно".
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

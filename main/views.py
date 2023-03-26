@@ -121,19 +121,22 @@ def viewquestion(request, question_number):
 
 def viewresults(request):
     test = TestModel.objects.latest('id')
+    test.completed = True
+    test.save()
+
     number_of_unanswered_questions = test.number_of_questions - test.number_of_answered_questions
     number_of_correctly_answered_questions = test.number_of_correctly_answered_questions
     number_of_incorrectly_answered_questions = test.number_of_incorrectly_answered_questions
-    surname_name = test.surname_name
-    group_number = test.group_number
     result = percents(number_of_correctly_answered_questions, test.number_of_questions)
+
     data = {
         'number_of_correctly_answered_questions': number_of_correctly_answered_questions,
         'number_of_incorrectly_answered_questions': number_of_incorrectly_answered_questions,
         'number_of_unanswered_questions': number_of_unanswered_questions,
-        'surname_name': surname_name,
-        'group_number': group_number,
-        'result': result
+        'surname_name': test.surname_name,
+        'group_number': test.group_number,
+        'result': result,
+        'incorrectly_answered_questions': incorrectly_answered_questions()
     }
     return render(request, 'main/Results.html', data)
 
@@ -214,6 +217,15 @@ def get_question_model(question_settings_dict, question_type):
     else:
         question_model = QuestionsType3Model.objects.get(id=question_id)
     return question_model
+
+
+def incorrectly_answered_questions():
+    questions = TestModel.objects.latest('id').questions['questions']
+    answered_questions_list = []
+    for key in questions:
+        if questions[key]['right'] == False:
+            answered_questions_list.append(key)
+    return answered_questions_list
 
 
 @login_required

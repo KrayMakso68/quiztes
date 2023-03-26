@@ -62,7 +62,7 @@
                             </div>
                         </div>
                     </div>
-                    {% if question_settings_dict.answered == True and question_number != test_data.number_of_questions %}
+                    {% if question_settings_dict.answered == True and question_number != test_data.number_of_questions and test_data.completed == False %}
                         <div class="container">
                             <div class="row justify-content-end">
                                 <div class="col-auto">
@@ -71,7 +71,7 @@
                                 </div>
                             </div>
                         </div>
-                    {% elif question_settings_dict.answered == True and question_number == test_data.number_of_questions %}
+                    {% elif question_settings_dict.answered == True and question_number == test_data.number_of_questions and test_data.completed == False %}
                         <div class="container">
                             <div class="row justify-content-end">
                                 <div class="col-auto">
