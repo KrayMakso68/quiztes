@@ -39,7 +39,7 @@
                                                         {% if question_settings_dict.answered == True %} disabled {% endif %}
                                                         {% if user_answer == index %} checked {% endif %}>
                                                 <label class="form-check-label" for="flexRadioDefault{{index}}">
-                                                    <h5 class="card-title">{{el}}</h5>
+                                                    <h5 class="card-title">{{ el | safe }}</h5>
                                                 </label>
                                             </div>
                                             {% endfor %}
