@@ -1,0 +1,38 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Бобер Жив!
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="container" style="margin-top: 2%;">
+            <div class="row justify-content-center">
+                <div class="col-4">
+                    <div class="alert alert-dark mb-5" role="alert">
+                        <div class="container text-center p-0">
+                            <h6 class="alert-heading">Кто спалится, тот лох((</h6>
+                            <hr>
+                            <div class="row justify-content-sm-center">
+                                <div class="col-4">
+                                    <table class="table text-end mb-0">
+                                        <tbody>
+                                        {% for qe in bober_alive %}
+                                            <tr>
+                                                <th scope="row">{{ qe.0 }}</th>
+                                                <td>{{ qe.1 }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

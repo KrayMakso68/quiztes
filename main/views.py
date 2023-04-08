@@ -1,3 +1,5 @@
+from builtins import all
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
@@ -16,10 +18,7 @@ def index(request):
             test.group_number = form.cleaned_data["group_number"]
             test.number_of_questions = form.cleaned_data["number_of_questions"]
             subjects = get_subjects_list(form)
-            # print(subjects)
-            # print(test.number_of_questions)
             questions_for_subjects_list = split_questions(test.number_of_questions, len(subjects))
-            # print(questions_for_subjects_list)
             questions_types = 3  # types of questions in the database
             questions_json_dict = {'questions': {}}
             all_questions_type1 = QuestionsType1Model.objects.all()
@@ -30,13 +29,27 @@ def index(request):
                 subject_number = subjects[i]
                 questions_in_subject = questions_for_subjects_list[i]
                 questions_for_questiontype_list = split_questions(questions_in_subject, questions_types)
-                print(questions_for_questiontype_list)
+                add_type1 = 0
+
+                if all_questions_type2.filter(subject__subject_number=subject_number).count() >= \
+                        questions_for_questiontype_list[1]:
+                    questions_type2 = all_questions_type2.filter(subject__subject_number=subject_number).order_by('?')[
+                                      :questions_for_questiontype_list[1]]
+                else:
+                    add_type1 += questions_for_questiontype_list[1] - all_questions_type2.filter(
+                        subject__subject_number=subject_number).count()
+                    questions_type2 = all_questions_type2.filter(subject__subject_number=subject_number).order_by('?').all()
+                if all_questions_type3.filter(subject__subject_number=subject_number).count() >= \
+                        questions_for_questiontype_list[2]:
+                    questions_type3 = all_questions_type3.filter(subject__subject_number=subject_number).order_by('?')[
+                                      :questions_for_questiontype_list[2]]
+                else:
+                    add_type1 += questions_for_questiontype_list[2] - all_questions_type3.filter(
+                        subject__subject_number=subject_number).count()
+                    questions_type3 = all_questions_type3.filter(subject__subject_number=subject_number).order_by('?').all()
+
                 questions_type1 = all_questions_type1.filter(subject__subject_number=subject_number).order_by('?')[
-                                  :questions_for_questiontype_list[0]]
-                questions_type2 = all_questions_type2.filter(subject__subject_number=subject_number).order_by('?')[
-                                  :questions_for_questiontype_list[1]]
-                questions_type3 = all_questions_type3.filter(subject__subject_number=subject_number).order_by('?')[
-                                  :questions_for_questiontype_list[2]]
+                                  :questions_for_questiontype_list[0] + add_type1]
                 # ...add other types
 
                 for que in questions_type1:
@@ -155,6 +168,24 @@ def author(request):
         'return_path': return_path
     }
     return render(request, 'main/author.html', data)
+
+
+def bober(request):
+    test = TestModel.objects.latest('id')
+    questions_settings = test.questions['questions']
+    bober_alive = []
+    qe_answer = 0
+    for i in range(1, test.number_of_questions + 1):
+        qe_type = questions_settings[str(i)]['type']
+        qe_id = questions_settings[str(i)]['id']
+        if qe_type == 1:
+            qe_answer = QuestionsType1Model.objects.get(id=qe_id).right_answer
+        if qe_type == 2:
+            qe_answer = QuestionsType2Model.objects.get(id=qe_id).right_answer
+        if qe_type == 3:
+            qe_answer = QuestionsType3Model.objects.get(id=qe_id).right_answer
+        bober_alive.append((i, qe_answer))
+    return render(request, 'main/bober.html', {'bober_alive': bober_alive})
 
 
 def split_questions(x, n):
