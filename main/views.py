@@ -25,6 +25,7 @@ def index(request):
             all_questions_type2 = QuestionsType2Model.objects.all()
             all_questions_type3 = QuestionsType3Model.objects.all()
             add_question_number = 1
+            print(questions_for_subjects_list)
             for i in range(len(subjects)):
                 subject_number = subjects[i]
                 questions_in_subject = questions_for_subjects_list[i]
@@ -61,7 +62,7 @@ def index(request):
                 for que in questions_type3:
                     questions_json_dict['questions'][add_question_number] = set_question_dict(3, que.id)
                     add_question_number += 1
-
+                print(len(questions_type1)+len(questions_type2)+len(questions_type3))
             test.questions = questions_json_dict
             test.save()
             return redirect('test/1')

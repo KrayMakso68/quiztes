@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ValidationError
-from main.models import Subject
+from main.models import Subject, QuestionsType1Model, QuestionsType2Model, QuestionsType3Model
 
 
 class AddTestForm(forms.Form):
@@ -38,7 +38,7 @@ class AddTestForm(forms.Form):
             'id': 'flexCheck'
         }),
     )
-    number_of_questions = forms.IntegerField(required=True, min_value=1, max_value=200)
+    number_of_questions = forms.IntegerField(required=True, min_value=1, max_value=215)
     number_of_questions.widget = forms.NumberInput(attrs={
         'class': 'form-control',
         'id': 'CountQuestions',
@@ -58,8 +58,50 @@ class AddTestForm(forms.Form):
         return name
 
     def clean_number_of_questions(self):
+        test_type = self.cleaned_data['test_type']
         number = self.cleaned_data['number_of_questions']
         check_subjects = self.cleaned_data['check_subjects']
-        if number < len(check_subjects):
-            raise ValidationError('Количество вопросов не может быть меньше количества выбранных тем!')
+        if test_type == '1':
+            if number < len(check_subjects):
+                raise ValidationError('Количество вопросов не может быть меньше количества выбранных тем!')
+            if len(check_subjects) == 1:
+                subject_number = check_subjects[0]
+                count = count_of_questions(subject_number)
+                if count < number:
+                    raise ValidationError(f'Вопросов по выбранной теме в системе всего: {count}')
+            if len(check_subjects) > 1:
+                count = 0
+                for subject_number in check_subjects:
+                    count += count_of_questions(subject_number)
+                if count < number:
+                    raise ValidationError(f'Вопросов по выбранным темам в системе всего: {count}')
+        elif test_type == '2':
+            check_subjects = (1, 2, 3, 4, 5, 6)
+            count = 0
+            for subject_number in check_subjects:
+                count += count_of_questions(subject_number)
+            if count < number:
+                raise ValidationError(f'Вопросов по выбранным темам в системе всего: {count}')
+        elif test_type == '3':
+            check_subjects = (7, 8, 9)
+            count = 0
+            for subject_number in check_subjects:
+                count += count_of_questions(subject_number)
+            if count < number:
+                raise ValidationError(f'Вопросов по выбранным темам в системе всего: {count}')
+        elif test_type == '4':
+            check_subjects = (1, 2, 3, 4, 5, 6, 7, 8, 9)
+            count = 0
+            for subject_number in check_subjects:
+                count += count_of_questions(subject_number)
+            if count < number:
+                raise ValidationError(f'Вопросов по выбранным темам в системе всего: {count}')
         return number
+
+
+def count_of_questions(subject_number):
+    subject_model = Subject.objects.get(subject_number=subject_number)
+    count = subject_model.questionstype1model_set.count()
+    count += subject_model.questionstype2model_set.count()
+    count += subject_model.questionstype3model_set.count()
+    return count
