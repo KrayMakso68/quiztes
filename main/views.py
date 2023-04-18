@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from easy_thumbnails.files import get_thumbnailer
 
-from main.forms import AddTestForm
+from main.forms import AddTestForm, count_of_questions
 from main.models import TestModel, QuestionsType1Model, QuestionsType2Model, QuestionsType3Model
 
 
@@ -39,7 +39,8 @@ def index(request):
                 else:
                     add_type1 += questions_for_questiontype_list[1] - all_questions_type2.filter(
                         subject__subject_number=subject_number).count()
-                    questions_type2 = all_questions_type2.filter(subject__subject_number=subject_number).order_by('?').all()
+                    questions_type2 = all_questions_type2.filter(subject__subject_number=subject_number).order_by(
+                        '?').all()
                 if all_questions_type3.filter(subject__subject_number=subject_number).count() >= \
                         questions_for_questiontype_list[2]:
                     questions_type3 = all_questions_type3.filter(subject__subject_number=subject_number).order_by('?')[
@@ -47,7 +48,8 @@ def index(request):
                 else:
                     add_type1 += questions_for_questiontype_list[2] - all_questions_type3.filter(
                         subject__subject_number=subject_number).count()
-                    questions_type3 = all_questions_type3.filter(subject__subject_number=subject_number).order_by('?').all()
+                    questions_type3 = all_questions_type3.filter(subject__subject_number=subject_number).order_by(
+                        '?').all()
 
                 questions_type1 = all_questions_type1.filter(subject__subject_number=subject_number).order_by('?')[
                                   :questions_for_questiontype_list[0] + add_type1]
@@ -62,7 +64,7 @@ def index(request):
                 for que in questions_type3:
                     questions_json_dict['questions'][add_question_number] = set_question_dict(3, que.id)
                     add_question_number += 1
-                print(len(questions_type1)+len(questions_type2)+len(questions_type3))
+                print(len(questions_type1) + len(questions_type2) + len(questions_type3))
             test.questions = questions_json_dict
             test.save()
             return redirect('test/1')
@@ -91,8 +93,10 @@ def viewquestion(request, question_number):
                 test.save()
             question_settings_dict = test.questions['questions'][str(question_number)]
             data = {'test_data': test,
-                    'progress_correct': percents(test.number_of_correctly_answered_questions, test.number_of_questions, progressbar=True),
-                    'progress_wrong': percents(test.number_of_incorrectly_answered_questions, test.number_of_questions, progressbar=True),
+                    'progress_correct': percents(test.number_of_correctly_answered_questions, test.number_of_questions,
+                                                 progressbar=True),
+                    'progress_wrong': percents(test.number_of_incorrectly_answered_questions, test.number_of_questions,
+                                               progressbar=True),
                     'question': question_model,
                     'question_number': question_number,
                     'next_question_number': question_number + 1,
@@ -110,8 +114,10 @@ def viewquestion(request, question_number):
                 test.save()
             question_settings_dict = test.questions['questions'][str(question_number)]
             data = {'test_data': test,
-                    'progress_correct': percents(test.number_of_correctly_answered_questions, test.number_of_questions, progressbar=True),
-                    'progress_wrong': percents(test.number_of_incorrectly_answered_questions, test.number_of_questions, progressbar=True),
+                    'progress_correct': percents(test.number_of_correctly_answered_questions, test.number_of_questions,
+                                                 progressbar=True),
+                    'progress_wrong': percents(test.number_of_incorrectly_answered_questions, test.number_of_questions,
+                                               progressbar=True),
                     'question': question_model,
                     'question_number': question_number,
                     'next_question_number': question_number + 1,
@@ -122,8 +128,10 @@ def viewquestion(request, question_number):
             return render(request, f'main/current_question_type{question_type}.html', data)
     else:
         data = {'test_data': test,
-                'progress_correct': percents(test.number_of_correctly_answered_questions, test.number_of_questions, progressbar=True),
-                'progress_wrong': percents(test.number_of_incorrectly_answered_questions, test.number_of_questions, progressbar=True),
+                'progress_correct': percents(test.number_of_correctly_answered_questions, test.number_of_questions,
+                                             progressbar=True),
+                'progress_wrong': percents(test.number_of_incorrectly_answered_questions, test.number_of_questions,
+                                           progressbar=True),
                 'question': question_model,
                 'question_number': question_number,
                 'next_question_number': question_number + 1,
@@ -189,26 +197,47 @@ def bober(request):
     return render(request, 'main/bober.html', {'bober_alive': bober_alive})
 
 
-def split_questions(x, n):
-    if x < n:
-        list_of_questions = [0] * n
-        for i in range(x):
+def split_questions(all_que, parts):
+    if all_que < parts:
+        list_of_questions = [0] * parts
+        for i in range(all_que):
             list_of_questions[i] = 1
         return list_of_questions
-    elif x % n == 0:
-        list_of_questions = [x // n for i in range(n)]
+    elif all_que % parts == 0:
+        list_of_questions = [all_que // parts for i in range(parts)]
         return list_of_questions
     else:
         list_of_questions = []
-        zp = n - (x % n)
-        pp = x // n
-        for i in range(n):
+        zp = parts - (all_que % parts)
+        pp = all_que // parts
+        for i in range(parts):
             if i >= zp:
                 list_of_questions.append(pp + 1)
             else:
                 list_of_questions.append(pp)
         list_of_questions.reverse()
         return list_of_questions
+
+
+# TODO: Сделать функцию адаптивного распределения вопросов по темам  зависимости от того, сколько всего есть вопросов в теме
+
+# def split_subjects(all_sb, parts):
+#     if all_sb < parts:
+#         list_of_subjects = [0] * parts
+#         for i in range(all_sb):
+#             list_of_subjects[i] = 1
+#         return list_of_subjects
+#     elif all_sb % parts == 0:
+#         nacop = 0
+#         list_of_subjects = [all_sb // parts for i in range(parts)]
+#         for number in range(len(list_of_subjects)):
+#             count = count_of_questions(number+1) + nacop
+#             nacop = 0
+#             if count < list_of_subjects[number]:
+#                 nacop += list_of_subjects[number] - count
+#                 list_of_subjects[number] = count_of_questions(number+1)
+#
+#         return list_of_subjects
 
 
 def percents(qe_part, qe_all, progressbar=False):
