@@ -221,23 +221,38 @@ def split_questions(all_que, parts):
 
 # TODO: Сделать функцию адаптивного распределения вопросов по темам  зависимости от того, сколько всего есть вопросов в теме
 
-# def split_subjects(all_sb, parts):
-#     if all_sb < parts:
+# def split_subjects(all_que, parts, subjects_number_list):
+#     if all_que < parts:
 #         list_of_subjects = [0] * parts
-#         for i in range(all_sb):
+#         for i in range(all_que):
 #             list_of_subjects[i] = 1
 #         return list_of_subjects
-#     elif all_sb % parts == 0:
+#     elif all_que % parts == 0:
+#         list_of_subjects = [all_que // parts for i in range(parts)]
+#     else:
+#         list_of_subjects = []
+#         zp = parts - (all_que % parts)
+#         pp = all_que // parts
+#         for i in range(parts):
+#            if i >= zp:
+#                list_of_subjects.append(pp + 1)
+#            else:
+#                list_of_subjects.append(pp)
+#         list_of_subjects.reverse()
+#        
 #         nacop = 0
-#         list_of_subjects = [all_sb // parts for i in range(parts)]
-#         for number in range(len(list_of_subjects)):
-#             count = count_of_questions(number+1) + nacop
-#             nacop = 0
-#             if count < list_of_subjects[number]:
-#                 nacop += list_of_subjects[number] - count
-#                 list_of_subjects[number] = count_of_questions(number+1)
-#
-#         return list_of_subjects
+#         for i in range(parts):
+#            for number in range(len(list_of_subjects)):
+#                count_all = count_of_questions(subjects_number_list[number])
+#                count_temp = list_of_subjects[number] + nacop
+#                nacop = 0
+#                if count_all < count_temp:
+#                    nacop += count_temp - count_all
+#                    list_of_subjects[number] = count_all
+#                else:
+#                    list_of_subjects[number] = count_temp
+#         
+#     return list_of_subjects
 
 
 def percents(qe_part, qe_all, progressbar=False):
