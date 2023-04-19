@@ -38,7 +38,7 @@ class AddTestForm(forms.Form):
             'id': 'flexCheck'
         }),
     )
-    number_of_questions = forms.IntegerField(required=True, min_value=1, max_value=215)
+    number_of_questions = forms.IntegerField(required=True, min_value=1, max_value=292)
     number_of_questions.widget = forms.NumberInput(attrs={
         'class': 'form-control',
         'id': 'CountQuestions',

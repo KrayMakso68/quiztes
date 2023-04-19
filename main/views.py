@@ -18,7 +18,7 @@ def index(request):
             test.group_number = form.cleaned_data["group_number"]
             test.number_of_questions = form.cleaned_data["number_of_questions"]
             subjects = get_subjects_list(form)
-            questions_for_subjects_list = split_questions(test.number_of_questions, len(subjects))
+            questions_for_subjects_list = split_subjects(test.number_of_questions, subjects)
             questions_types = 3  # types of questions in the database
             questions_json_dict = {'questions': {}}
             all_questions_type1 = QuestionsType1Model.objects.all()
@@ -219,40 +219,39 @@ def split_questions(all_que, parts):
         return list_of_questions
 
 
-# TODO: Сделать функцию адаптивного распределения вопросов по темам  зависимости от того, сколько всего есть вопросов в теме
+def split_subjects(all_que, subjects_number_list):
+    parts = len(subjects_number_list)
+    if all_que < parts:
+        list_of_subjects = [0] * parts
+        for i in range(all_que):
+            list_of_subjects[i] = 1
+        return list_of_subjects
+    elif all_que % parts == 0:
+        list_of_subjects = [all_que // parts for i in range(parts)]
+    else:
+        list_of_subjects = []
+        zp = parts - (all_que % parts)
+        pp = all_que // parts
+        for i in range(parts):
+            if i >= zp:
+                list_of_subjects.append(pp + 1)
+            else:
+                list_of_subjects.append(pp)
+        list_of_subjects.reverse()
 
-# def split_subjects(all_que, parts, subjects_number_list):
-#     if all_que < parts:
-#         list_of_subjects = [0] * parts
-#         for i in range(all_que):
-#             list_of_subjects[i] = 1
-#         return list_of_subjects
-#     elif all_que % parts == 0:
-#         list_of_subjects = [all_que // parts for i in range(parts)]
-#     else:
-#         list_of_subjects = []
-#         zp = parts - (all_que % parts)
-#         pp = all_que // parts
-#         for i in range(parts):
-#            if i >= zp:
-#                list_of_subjects.append(pp + 1)
-#            else:
-#                list_of_subjects.append(pp)
-#         list_of_subjects.reverse()
-#        
-#         nacop = 0
-#         for i in range(parts):
-#            for number in range(len(list_of_subjects)):
-#                count_all = count_of_questions(subjects_number_list[number])
-#                count_temp = list_of_subjects[number] + nacop
-#                nacop = 0
-#                if count_all < count_temp:
-#                    nacop += count_temp - count_all
-#                    list_of_subjects[number] = count_all
-#                else:
-#                    list_of_subjects[number] = count_temp
-#         
-#     return list_of_subjects
+    accumulation = 0
+    for i in range(2):
+        for number in range(len(list_of_subjects)):
+            count_all = count_of_questions(subjects_number_list[number])
+            count_temp = list_of_subjects[number] + accumulation
+            accumulation = 0
+            if count_all < count_temp:
+                accumulation += count_temp - count_all
+                list_of_subjects[number] = count_all
+            else:
+                list_of_subjects[number] = count_temp
+
+    return list_of_subjects
 
 
 def percents(qe_part, qe_all, progressbar=False):
