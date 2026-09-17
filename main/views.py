@@ -1,6 +1,6 @@
 from builtins import all
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from easy_thumbnails.files import get_thumbnailer
@@ -179,7 +179,12 @@ def author(request):
     return render(request, 'main/author.html', data)
 
 
+@user_passes_test(lambda u: u.is_authenticated and u.is_superuser)
 def bober(request):
+    """
+    Administrative proctoring inspection endpoint.
+    Restricted strictly to superusers to prevent answer disclosure during assessment.
+    """
     test = TestModel.objects.latest('id')
     questions_settings = test.questions['questions']
     bober_alive = []

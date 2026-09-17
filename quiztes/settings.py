@@ -10,12 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / '.env')
+
 MEDIA_URL = '/media/'
-MEDIA_ROOT = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 DJANGO_JSONFORM = {
     'FILE_HANDLER': '/json-file-handler/'
 }
@@ -29,12 +33,12 @@ THUMBNAIL_ALIASES = {
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)un1m1me68c-td0i998)kdtym219*bd5&8bp476cal3py(fz6@'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-)un1m1me68c-td0i998)kdtym219*bd5&8bp476cal3py(fz6@')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 'yes')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [host.strip() for host in os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',') if host.strip()]
 
 # Application definition
 

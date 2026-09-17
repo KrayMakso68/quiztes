@@ -17,8 +17,7 @@
                             <hr>
                             <div class="row justify-content-sm-center">
                                 <div class="col-8">
-                                    <h6 class="mb-4">Программа разработана как подмодуль обучающей программы по
-                                        дисциплине Теория Электросвязи, кафедра 43.</h6>
+                                    <h6 class="mb-4">Система разработана для проведения комплексного тестирования, квалификационной оценки и автоматизированного контроля знаний сотрудников и технических специалистов.</h6>
                                     <a href="{{ return_path }}"
                                        class="btn btn-warning btn-lg" role="button">Вернуться</a>
                                 </div>
@@ -50,10 +49,10 @@
                                         <div class="accordion-body">
                                             <div class="row m-0 p-0">
                                                 <div class="col-6 m-0 p-0">
-                                                    <img src="{% static 'main/img/startpage.png' %}" alt="logo43" class="img-fluid rounded">
+                                                    <img src="{% static 'main/img/startpage.png' %}" alt="screenshot" class="img-fluid rounded">
                                                 </div>
                                                 <div class="col">
-                                                    <strong>1.</strong> Введите свою Фамилию и Имя в корректном формате через пробел, а также номер учебной группы.<br>
+                                                    <strong>1.</strong> Введите свои Фамилию и Имя в корректном формате через пробел, а также идентификатор подразделения или группы.<br>
                                                     <strong>2.</strong> Выберите вид теста, либо необходимые темы, если выбран пункт "Свой тест".<br>
                                                     <strong>3.</strong> Введите необходимое количество вопросов. <br><br>
                                                     <strong>Количество вопросов не может быть меньше количества выбранных тем!</strong>
@@ -75,7 +74,7 @@
                                         <div class="accordion-body">
                                            <div class="row m-0 p-0">
                                                 <div class="col-6 m-0 mb-3 p-0">
-                                                    <img src="{% static 'main/img/questionpage.png' %}" alt="logo43" class="img-fluid rounded">
+                                                    <img src="{% static 'main/img/questionpage.png' %}" alt="screenshot" class="img-fluid rounded">
                                                 </div>
                                                 <div class="col">
                                                     <strong>1.</strong> Внимательно прочитайте вопрос и варианты ответа.<br>
@@ -86,7 +85,7 @@
                                             </div>
                                             <div class="row m-0 p-0">
                                                 <div class="col-6 m-0 p-0">
-                                                    <img src="{% static 'main/img/questionpage1.png' %}" alt="logo43" class="img-fluid rounded">
+                                                    <img src="{% static 'main/img/questionpage1.png' %}" alt="screenshot" class="img-fluid rounded">
                                                 </div>
                                                 <div class="col">
                                                     После нажатия вы увидите результат своего ответа.<br>
@@ -111,7 +110,7 @@
                                         <div class="accordion-body">
                                              <div class="row m-0 p-0">
                                                 <div class="col-6 m-0 p-0">
-                                                    <img src="{% static 'main/img/resultpage.png' %}" alt="logo43" class="img-fluid rounded">
+                                                    <img src="{% static 'main/img/resultpage.png' %}" alt="screenshot" class="img-fluid rounded">
                                                 </div>
                                                 <div class="col">
                                                     При завершении Вы попадаете на страницу результатов.<br>
@@ -138,16 +137,9 @@
 {% endblock %}
 
 {% block footer %}
-    <footer class="footer d-flex flex-wrap justify-content-between align-items-center border-top" id="footer">
-
-        <p class="col-2 mb-0 text-muted">Академия ФСО России</p>
-
-        <div class="col-6">
-
-        </div>
-
-        <ul class="nav col-2 justify-content-end">
-
+    <footer class="footer d-flex flex-wrap justify-content-between align-items-center border-top py-3 my-2" id="footer">
+        <p class="col-auto mb-0 text-muted">© Adaptive Knowledge Assessment & Exam Engine</p>
+        <ul class="nav col-auto justify-content-end">
         </ul>
     </footer>
 {% endblock %}
