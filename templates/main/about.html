@@ -17,7 +17,7 @@
                             <hr>
                             <div class="row justify-content-sm-center">
                                 <div class="col-8">
-                                    <h6 class="mb-4">Система разработана для проведения комплексного тестирования, квалификационной оценки и автоматизированного контроля знаний сотрудников и технических специалистов.</h6>
+                                    <h6 class="mb-4">Система разработана для проведения комплексного тестирования, квалификационной оценки и автоматизированного контроля знаний по дисциплине «Теория электросвязи» (ТЭС).</h6>
                                     <a href="{{ return_path }}"
                                        class="btn btn-warning btn-lg" role="button">Вернуться</a>
                                 </div>
@@ -138,8 +138,10 @@
 
 {% block footer %}
     <footer class="footer d-flex flex-wrap justify-content-between align-items-center border-top py-3 my-2" id="footer">
-        <p class="col-auto mb-0 text-muted">© Adaptive Knowledge Assessment & Exam Engine</p>
+        <p class="col-auto mb-0 text-muted">Теория электросвязи • Система адаптивного тестирования</p>
         <ul class="nav col-auto justify-content-end">
+            <li class="nav-item"><a href="{% url 'view-about' %}" class="nav-link px-2 pt-1 text-muted">О программе</a></li>
+            <li class="nav-item"><a href="{% url 'view-author' %}" class="nav-link px-2 pt-1 text-muted">Автор</a></li>
         </ul>
     </footer>
 {% endblock %}

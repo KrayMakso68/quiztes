@@ -1,7 +1,7 @@
-﻿# Adaptive Knowledge Assessment & Exam Engine
+# Adaptive Knowledge Assessment & Exam Engine (Telecommunication Theory)
 
 <p align="center">
-  <strong>High-performance, configurable web assessment engine with dynamic JSON-schema question modeling, automated media thumbnailing, and real-time score analytics</strong>
+  <strong>High-performance, configurable web assessment engine for Telecommunication Theory (TET) with dynamic JSON-schema question modeling, automated media thumbnailing, and real-time score analytics</strong>
 </p>
 
 <p align="center">
